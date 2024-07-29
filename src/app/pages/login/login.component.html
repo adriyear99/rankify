@@ -1,0 +1,15 @@
+<div class="d-flex justify-content-center align-items-center bg-warning vh-100">
+    <div class="col-4 m-auto p-5 border border-1 bg-dark">
+        <div class="col-12 mb-3">
+            <label for="email" class="form-label text-light">E-mail</label>
+            <input type="email" class="form-control" id="email" placeholder="nome@exemplo.com" [(ngModel)]="login.email">
+        </div>
+        <div class="col-12 mb-3">
+            <label for="senha" class="form-label text-light">Senha</label>
+            <input type="password" class="form-control" id="senha" placeholder="senha" [(ngModel)]="login.senha">
+        </div>
+        <div class="col-12 text-center">
+            <button type="button" class="btn btn-primary" (click)="logar()">Fazer Login</button>
+        </div>
+    </div>
+</div>

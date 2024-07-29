@@ -5,16 +5,24 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BandaComponent } from './components/banda/banda.component';
 import { BandasComponent } from './components/bandas/bandas.component';
+import { LoginComponent } from './pages/login/login.component';
+import {HttpClientModule} from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { MenuComponent } from './pages/menu/menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BandaComponent,
-    BandasComponent
+    BandasComponent,
+    LoginComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    HttpClientModule,
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
