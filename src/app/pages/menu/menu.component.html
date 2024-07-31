@@ -4,17 +4,17 @@
             <form>
                 <div class="row">
                     <div class="col-12 col-md-6 mb-3">
-                        <label for="nome" class="form-label">Nome</label>
+                        <label for="nome" class="form-label">Name</label>
                         <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" [(ngModel)]="nome">
                     </div>
                     <div class="col-12 col-md-6 mb-3">
-                        <label for="numeroItens" class="form-label">Número de itens</label>
+                        <label for="numeroItens" class="form-label">Number of items</label>
                         <input type="number" class="form-control" id="numeroItens" name="numeroItens" placeholder="Itens" min="1" max="10" [(ngModel)]="numeroItens" (ngModelChange)="checkNumberLimit()">
                     </div>
                     <div class="col-12 col-md-6 mb-3">
-                        <label for="select" class="form-label">Tipo de seleção</label>
+                        <label for="select" class="form-label">Selection type</label>
                         <select class="form-select" id="select" name="select" [(ngModel)]="categoriaSelecionada" (ngModelChange)="checkCategoria()">
-                            <option [ngValue]=0 selected hidden>Músicas</option>
+                            <option [ngValue]=0 selected hidden>Tracks</option>
                             <option *ngFor="let cat of categorias" [ngValue]="cat.id">
                                 {{cat.nome}}
                             </option>
@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <label for="busca" class="form-label">
-                            Selecione {{genero}}{{numero}} {{categoria}}{{numero}}
+                            Select the {{categoria}}{{numero}}
                         </label>
                         <div class="input-group mb-3">
                             <input id="busca" name="busca" type="text" class="form-control" placeholder="{{format(categoria)}}" [(ngModel)]="stringBusca">
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-12 col-md-6">
                         <button type="button" class="btn btn-primary" (click)="gerarTemplate()">
-                            Gerar
+                            Generate
                         </button>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
     <div class="col-12 col-md-6 bg-success">
         <div class="p-5 h-100 d-flex align-items-center justify-content-center">
             <div class="bg-danger h-100 col-12 p-3 text-light">
-                <h1 class="text-center">Ranking de {{nome}}</h1>
+                <h1 class="text-center">{{nome}}</h1>
                 <!-- <ul>
                     <li *ngFor="let item of lista" class="mb-3">{{item.nome}}</li>
                 </ul> -->
@@ -61,8 +61,17 @@
             </div>
             <div class="modal-body">
                 <p *ngIf="resultados.length == 0; else showResults">No results</p>
+                <!-- <ng-template #showResults>
+                    <div *ngFor="let res of resultados" class="d-flex align-items-center mb-2">
+                        <img src="{{res.image[1]['#text']}}" class="img-fluid" alt="Teste">
+                        <p>{{res.artist}} - {{res.name}}</p>
+                    </div>
+                </ng-template> -->
                 <ng-template #showResults>
-                    <p *ngFor="let res of resultados">{{res.artist}} - {{res.name}}</p>
+                    <div *ngFor="let res of resultados" class="d-flex align-items-center mb-2">
+                        <img src="{{res.images[2]['url']}}" class="img-fluid" alt="Teste">
+                        <p>{{res.name}}</p>
+                    </div>
                 </ng-template>
             </div>
             <div class="modal-footer">
