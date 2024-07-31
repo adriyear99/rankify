@@ -1,1 +1,74 @@
-<p>menu works!</p>
+<div class="row vh-100">
+    <div class="col-12 col-md-6 bg-warning">
+        <div class="vh-100 p-4">
+            <form>
+                <div class="row">
+                    <div class="col-12 col-md-6 mb-3">
+                        <label for="nome" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" [(ngModel)]="nome">
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <label for="numeroItens" class="form-label">Número de itens</label>
+                        <input type="number" class="form-control" id="numeroItens" name="numeroItens" placeholder="Itens" min="1" max="10" [(ngModel)]="numeroItens" (ngModelChange)="checkNumberLimit()">
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <label for="select" class="form-label">Tipo de seleção</label>
+                        <select class="form-select" id="select" name="select" [(ngModel)]="categoriaSelecionada" (ngModelChange)="checkCategoria()">
+                            <option [ngValue]=0 selected hidden>Músicas</option>
+                            <option *ngFor="let cat of categorias" [ngValue]="cat.id">
+                                {{cat.nome}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <label for="busca" class="form-label">
+                            Selecione {{genero}}{{numero}} {{categoria}}{{numero}}
+                        </label>
+                        <div class="input-group mb-3">
+                            <input id="busca" name="busca" type="text" class="form-control" placeholder="{{format(categoria)}}" [(ngModel)]="stringBusca">
+                            <span class="input-group-text" (click)="buscar()" data-bs-toggle="modal" data-bs-target="#modal">
+                                <i class="bi bi-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <button type="button" class="btn btn-primary" (click)="gerarTemplate()">
+                            Gerar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 bg-success">
+        <div class="p-5 h-100 d-flex align-items-center justify-content-center">
+            <div class="bg-danger h-100 col-12 p-3 text-light">
+                <h1 class="text-center">Ranking de {{nome}}</h1>
+                <!-- <ul>
+                    <li *ngFor="let item of lista" class="mb-3">{{item.nome}}</li>
+                </ul> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Search for tracks</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p *ngIf="resultados.length == 0; else showResults">No results</p>
+                <ng-template #showResults>
+                    <p *ngFor="let res of resultados">{{res.artist}} - {{res.name}}</p>
+                </ng-template>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
