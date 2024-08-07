@@ -69,7 +69,7 @@ export class LastFmService {
             fromObject: {
                 q: stringBusca,
                 type: 'artist',
-                limit: '10'
+                limit: '12'
             }
         });
         return this.http.get(`${this.urlBaseSpotify}/v1/search`, { params,

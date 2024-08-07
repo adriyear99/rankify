@@ -1,82 +1,151 @@
 <div class="row vh-100">
+    <!-- MAIN FORM -->
     <div class="col-12 col-md-6 bg-warning">
         <div class="vh-100 p-4">
             <form>
-                <div class="row">
-                    <div class="col-12 col-md-6 mb-3">
-                        <label for="nome" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" [(ngModel)]="nome">
+                <!-- PART 1 -->
+                <div class="row" id="part1" *ngIf="formStep == 1">
+                    <div class="col-12 mb-3">
+                        <label for="name" class="form-label">Ranking Title</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Ranking Title" [(ngModel)]="name">
                     </div>
-                    <div class="col-12 col-md-6 mb-3">
-                        <label for="numeroItens" class="form-label">Number of items</label>
-                        <input type="number" class="form-control" id="numeroItens" name="numeroItens" placeholder="Itens" min="1" max="10" [(ngModel)]="numeroItens" (ngModelChange)="checkNumberLimit()">
+                    <div class="col-6 mb-3">
+                        <label for="color" class="form-label">Background Color</label>
+                        <input type="color" class="form-control form-control-color w-100" id="color" name="color" [(ngModel)]="color">
                     </div>
-                    <div class="col-12 col-md-6 mb-3">
+                    <div class="col-6 mb-3">
+                        <label for="numberOfItems" class="form-label">Number of items</label>
+                        <select class="form-select" id="numberOfItems" name="numberOfItems" [(ngModel)]="numberOfItems" (ngModelChange)="gerarTemplate()">
+                            <option [ngValue]=1 selected hidden>1</option>
+                            <option *ngFor="let num of values" [ngValue]="num">{{num}}</option>
+                        </select>
+                    </div>
+                    <div class="col-12 mb-4">
                         <label for="select" class="form-label">Selection type</label>
                         <select class="form-select" id="select" name="select" [(ngModel)]="categoriaSelecionada" (ngModelChange)="checkCategoria()">
                             <option [ngValue]=0 selected hidden>Tracks</option>
-                            <option *ngFor="let cat of categorias" [ngValue]="cat.id">
-                                {{cat.nome}}
+                            <option *ngFor="let cat of categories" [ngValue]="cat.id">
+                                {{cat.name}}
                             </option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-6 mb-3">
+                    <div class="col-12 col-md-4 btn-group">
+                        <button type="button" class="btn btn-primary" (click)="next()">
+                            Next
+                        </button>
+                    </div>
+                </div>
+                <!-- PART 2 -->
+                <div class="row" id="part2" *ngIf="formStep == 2">
+                    <div class="col-12 mb-2">
                         <label for="busca" class="form-label">
                             Select the {{categoria}}{{numero}}
                         </label>
-                        <div class="input-group mb-3">
-                            <input id="busca" name="busca" type="text" class="form-control" placeholder="{{format(categoria)}}" [(ngModel)]="stringBusca">
-                            <span class="input-group-text" (click)="buscar()" data-bs-toggle="modal" data-bs-target="#modal">
-                                <i class="bi bi-search"></i>
-                            </span>
+                        <div class="input-group mb-3" *ngFor="let item of lista; index as i">
+                            <input 
+                                type="text" 
+                                class="form-control pointer" 
+                                placeholder="Select {{categoria}} {{i+1}}"
+                                data-bs-toggle="modal" data-bs-target="#modal"
+                                (click)="select(i)"
+                                readonly
+                            >
                         </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <button type="button" class="btn btn-primary" (click)="gerarTemplate()">
-                            Generate
-                        </button>
+                    <div class="col-12 mb-3">
+                        <div class="col-12 col-md-4 btn-group">
+                            <button type="button" class="btn btn-secondary" (click)="back()">
+                                Back
+                            </button>
+                        </div>
+                        <div class="col-12 col-md-4 mt-2 mt-md-0 mx-md-2 btn-group">
+                            <button type="button" class="btn btn-primary" (click)="gerarTemplate()">
+                                Generate
+                            </button>
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <!-- GENERATED IMAGE -->
     <div class="col-12 col-md-6 bg-success">
         <div class="p-5 h-100 d-flex align-items-center justify-content-center">
-            <div class="bg-danger h-100 col-12 p-3 text-light">
-                <h1 class="text-center">{{nome}}</h1>
-                <!-- <ul>
-                    <li *ngFor="let item of lista" class="mb-3">{{item.nome}}</li>
-                </ul> -->
+            <div class="h-100 col-12 text-light" [ngStyle]="{background: color}">
+                <h1 class="text-center p-3 h-10">{{name}}</h1>
+                <table class="table">
+                    <tbody>
+                        <tr *ngFor="let item of lista">
+                            <th scope="row" class="text-center">1</th>
+                            <td>
+                                <img 
+                                src="{{item.img}}"
+                                class="img-fluid h-100 w-100" 
+                                alt="{{item.artist}} - {{item.name}}">
+                            </td>
+                            <td>
+                                {{item.artist}}<br>{{item.name}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 
+<!-- SEARCH MODAL -->
 <div class="modal" tabindex="-1" id="modal">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-width: 90%;">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Search for tracks</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header border-bottom-2!important">
+                <h5 class="modal-title">Search for {{categoria}}s</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="reset()"></button>
             </div>
             <div class="modal-body">
-                <p *ngIf="resultados.length == 0; else showResults">No results</p>
-                <!-- <ng-template #showResults>
-                    <div *ngFor="let res of resultados" class="d-flex align-items-center mb-2">
-                        <img src="{{res.image[1]['#text']}}" class="img-fluid" alt="Teste">
-                        <p>{{res.artist}} - {{res.name}}</p>
+                <div class="col-9 mx-auto">
+                    <div class="input-group input-group-lg mb-3">
+                        <input id="search" name="search" #search type="text" class="form-control" placeholder="Select {{categoria}}" [(ngModel)]="stringBusca" (keyup.enter)="buscar()">
+                        <span class="input-group-text pointer" (click)="buscar()">
+                            <i class="bi bi-search"></i>
+                        </span>
                     </div>
-                </ng-template> -->
+                </div>
+                
+                <p class="text-center mt-5" 
+                *ngIf="resultados.length == 0 && show; 
+                else showResults">
+                    No results
+                </p>
                 <ng-template #showResults>
-                    <div *ngFor="let res of resultados" class="d-flex align-items-center mb-2">
-                        <img src="{{res.images[2]['url']}}" class="img-fluid" alt="Teste">
-                        <p>{{res.name}}</p>
+                    <div class="row" *ngIf="categoriaSelecionada == 1">
+                        <div *ngFor="let res of resultados" class="mb-3">
+                            <div (click)="add(res)" data-bs-dismiss="modal">
+                                <!-- <img src="{{res.image[1]['#text']}}" class="img-fluid h-100 w-100" alt="{{res.artist}} - {{res.name}}"> -->
+                                <p class="pointer">{{res.artist}} - {{res.name}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="categoriaSelecionada == 2">
+                        <div *ngFor="let res of resultados" class="col-6 col-sm-4 col-md-2 mb-3">
+                            <div (click)="add(res)" data-bs-dismiss="modal">
+                                <img src="{{res.image[2]['#text']}}" class="img-fluid h-100 w-100" alt="{{res.artist}} - {{res.name}}">
+                                <!-- <p>{{res.artist}} - {{res.name}}</p> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="categoriaSelecionada == 3">
+                        <div *ngFor="let res of resultados" class="col-6 col-sm-4 col-md-2 mb-3">
+                            <div (click)="add(res)" data-bs-dismiss="modal">
+                                <img src="{{res.images[2]['url']}}" class="img-fluid h-100 w-100" style="object-fit: contain !important;" alt="{{res.artist}} - {{res.name}}">
+                                <!-- <p>{{res.name}}</p> -->
+                            </div>
+                        </div>
                     </div>
                 </ng-template>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Search</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

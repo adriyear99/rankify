@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LastFmService } from 'src/app/services/last-fm.service';
 
 @Component({
@@ -8,14 +8,18 @@ import { LastFmService } from 'src/app/services/last-fm.service';
 })
 export class MenuComponent implements OnInit {
 
-  categorias: any = [
-    {id: 1, nome: 'Tracks'},
-    {id: 2, nome: 'Albums'},
-    {id: 3, nome: 'Artists'}
+  @ViewChild('search') searchElement: ElementRef;
+
+  categories: any = [
+    {id: 1, name: 'Tracks'},
+    {id: 2, name: 'Albums'},
+    {id: 3, name: 'Artists'}
   ];
 
-  nome: string = '';
-  numeroItens: number = 1;
+  values: number[] = [1,2,3,4,5,6,7,8,9,10];
+  name: string = 'My Ranking';
+  color: string = '#000';
+  numberOfItems: number = 1;
   categoriaSelecionada: number = 0;
   categoria: string = 'track';
   numero: string = '';
@@ -23,11 +27,15 @@ export class MenuComponent implements OnInit {
   resultados: any[] = [];
   lista: any[] = [];
   token: any = null;
+  formStep: number = 1;
+  show: boolean = false;
+  selectedItem: number = 0;
 
   constructor(private lastFmService: LastFmService) { }
 
   ngOnInit(): void {
     this.generateSpotifyToken();
+    this.gerarTemplate();
   }
 
   generateSpotifyToken() {
@@ -35,24 +43,11 @@ export class MenuComponent implements OnInit {
       next: (data: any) => {
         this.token = data.token_type + ' ' + data.access_token;
         localStorage.setItem('Authorization', this.token);
-        console.log(this.token);
       }, 
       error: (error) => {
         console.log(error);
       }
     });
-  }
-
-  checkNumberLimit() {
-    if(this.numeroItens < 1) {
-      this.numeroItens = 1;
-    } else if(this.numeroItens == 1) {
-      this.numero = ''
-    } else if(this.numeroItens > 1 && this.numeroItens <= 10) {
-      this.numero = 's';
-    } else {
-      this.numeroItens = 10;
-    }
   }
 
   checkCategoria() {
@@ -69,17 +64,24 @@ export class MenuComponent implements OnInit {
       default:
         this.categoria = 'song';
     }
+    this.resultados = [];
   }
 
   gerarTemplate() {
-    this.lista = new Array(this.numeroItens);
-  }
+    this.lista = new Array(this.numberOfItems);
 
-  format(text: string) {
-    return text.charAt(0).toUpperCase() + text.slice(1) + 's';
+    for(let i = 0; i < this.numberOfItems; i++) {
+      this.lista[i] = {
+        artist: 'Artist',
+        name: 'Name',
+        img: 'Image'
+      }
+    }
+    console.log(this.lista);
   }
 
   buscar() {
+    this.show = true;
     switch(this.categoriaSelecionada) {
       case 1:
         this.getSongs();
@@ -91,6 +93,7 @@ export class MenuComponent implements OnInit {
         this.getArtists();
         break
       default:
+        this.categoriaSelecionada = 1;
         this.getSongs();
     }
   }
@@ -98,7 +101,7 @@ export class MenuComponent implements OnInit {
   getSongs() {
     this.lastFmService.buscarMusicas(this.stringBusca).subscribe({
       next: (data: any) => {
-        this.resultados = data.results.trackmatches.track;
+        this.resultados = data.results ? data.results.trackmatches.track : [];
         console.log(this.resultados);
       }, 
       error: (error) => {
@@ -150,6 +153,50 @@ export class MenuComponent implements OnInit {
     )
 
     console.log(this.resultados);
+  }
+
+  select(index: number) {
+    this.selectedItem = index;
+    this.searchElement.nativeElement.focus();
+  }
+
+  add(res: any) {
+    console.log(res);
+
+    if(this.categoriaSelecionada == 3) {
+      this.lista[this.selectedItem] = {
+        artist: res.name,
+        name: '',
+        img: res.images[2].url
+      };
+
+    } else {
+      this.lista[this.selectedItem] = {
+        artist: res.artist,
+        name: res.name, 
+        img: res.image[1]['#text']
+      };
+    }
+    
+    console.log(this.lista);
+    this.stringBusca = '';
+    this.resultados = [];
+    this.show = false;
+
+  }
+
+  reset() {
+    this.resultados = [];
+    this.show = false;
+    this.stringBusca = '';
+  }
+
+  next() {
+    this.formStep = 2;
+  }
+
+  back() {
+    this.formStep = 1;
   }
 
 }
