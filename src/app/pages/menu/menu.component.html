@@ -15,7 +15,7 @@
                     </div>
                     <div class="col-6 mb-3">
                         <label for="numberOfItems" class="form-label">Number of items</label>
-                        <select class="form-select" id="numberOfItems" name="numberOfItems" [(ngModel)]="numberOfItems" (ngModelChange)="gerarTemplate()">
+                        <select class="form-select" id="numberOfItems" name="numberOfItems" [(ngModel)]="numberOfItems" (ngModelChange)="generateTemplate()">
                             <option [ngValue]=1 selected hidden>1</option>
                             <option *ngFor="let num of values" [ngValue]="num">{{num}}</option>
                         </select>
@@ -39,16 +39,20 @@
                 <div class="row" id="part2" *ngIf="formStep == 2">
                     <div class="col-12 mb-2">
                         <label for="busca" class="form-label">
-                            Select the {{categoria}}{{numero}}
+                            Select the {{category}}s
                         </label>
                         <div class="input-group mb-3" *ngFor="let item of lista; index as i">
                             <input 
                                 type="text" 
                                 class="form-control pointer" 
-                                placeholder="Select {{categoria}} {{i+1}}"
+                                placeholder="Select {{category}} {{i+1}}"
                                 data-bs-toggle="modal" data-bs-target="#modal"
                                 (click)="select(i)"
                                 readonly
+                                value="{{
+                                    item.artist && item.name ?
+                                    item.artist + ' - ' + item.name: ''
+                                }}"
                             >
                         </div>
                     </div>
@@ -59,7 +63,7 @@
                             </button>
                         </div>
                         <div class="col-12 col-md-4 mt-2 mt-md-0 mx-md-2 btn-group">
-                            <button type="button" class="btn btn-primary" (click)="gerarTemplate()">
+                            <button type="button" class="btn btn-primary" (click)="generateTemplate()">
                                 Generate
                             </button>
                         </div>
@@ -73,18 +77,20 @@
         <div class="p-5 h-100 d-flex align-items-center justify-content-center">
             <div class="h-100 col-12 text-light" [ngStyle]="{background: color}">
                 <h1 class="text-center p-3 h-10">{{name}}</h1>
-                <table class="table">
+                <table class="table h-90">
                     <tbody>
                         <tr *ngFor="let item of lista">
-                            <th scope="row" class="text-center">1</th>
-                            <td>
+                            <th scope="row" class="col-2 text-center text-light bg-black border-bottom border-light">{{item.id}}</th>
+                            <td class="col-2 border-0 p-0">
                                 <img 
                                 src="{{item.img}}"
-                                class="img-fluid h-100 w-100" 
+                                class="img-fluid w-100"
                                 alt="{{item.artist}} - {{item.name}}">
+                                <!-- class="img-fluid h-100 w-100"  -->
                             </td>
-                            <td>
-                                {{item.artist}}<br>{{item.name}}
+                            <td class="col-6 border-bottom border-black">
+                                <h2>{{item.artist ? item.artist : 'Artist'}}</h2>
+                                <p>{{item.name ? item.name : 'Song/Album'}}</p>
                             </td>
                         </tr>
                     </tbody>
@@ -99,13 +105,13 @@
     <div class="modal-dialog" style="max-width: 90%;">
         <div class="modal-content">
             <div class="modal-header border-bottom-2!important">
-                <h5 class="modal-title">Search for {{categoria}}s</h5>
+                <h5 class="modal-title">Search for {{category}}s</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="reset()"></button>
             </div>
             <div class="modal-body">
                 <div class="col-9 mx-auto">
                     <div class="input-group input-group-lg mb-3">
-                        <input id="search" name="search" #search type="text" class="form-control" placeholder="Select {{categoria}}" [(ngModel)]="stringBusca" (keyup.enter)="buscar()">
+                        <input id="search" name="search" #search type="text" class="form-control" placeholder="Select {{category}}" [(ngModel)]="stringBusca" (keyup.enter)="buscar()">
                         <span class="input-group-text pointer" (click)="buscar()">
                             <i class="bi bi-search"></i>
                         </span>

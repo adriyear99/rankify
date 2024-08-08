@@ -21,8 +21,8 @@ export class MenuComponent implements OnInit {
   color: string = '#000';
   numberOfItems: number = 1;
   categoriaSelecionada: number = 0;
-  categoria: string = 'track';
-  numero: string = '';
+  category: string = 'track';
+  number: string = '';
   stringBusca: string = '';
   resultados: any[] = [];
   lista: any[] = [];
@@ -30,12 +30,13 @@ export class MenuComponent implements OnInit {
   formStep: number = 1;
   show: boolean = false;
   selectedItem: number = 0;
+  listHasStarted: boolean = false;
 
   constructor(private lastFmService: LastFmService) { }
 
   ngOnInit(): void {
     this.generateSpotifyToken();
-    this.gerarTemplate();
+    this.generateTemplate();
   }
 
   generateSpotifyToken() {
@@ -53,32 +54,58 @@ export class MenuComponent implements OnInit {
   checkCategoria() {
     switch(this.categoriaSelecionada) {
       case 1:
-        this.categoria = 'song';
+        this.category = 'track';
         break
       case 2:
-        this.categoria = 'album';
+        this.category = 'album';
         break
       case 3:
-        this.categoria = 'artist';
+        this.category = 'artist';
         break
       default:
-        this.categoria = 'song';
+        this.category = 'track';
     }
     this.resultados = [];
   }
 
-  gerarTemplate() {
-    this.lista = new Array(this.numberOfItems);
-
-    for(let i = 0; i < this.numberOfItems; i++) {
-      this.lista[i] = {
-        artist: 'Artist',
-        name: 'Name',
-        img: 'Image'
+  generateTemplate() {
+    if(this.listHasStarted) { 
+      // list already has selected elements
+      if(this.lista.length > this.numberOfItems) {
+        // user went back and decreased the item size
+        const diff = this.lista.length - this.numberOfItems;
+        for(let i = 0; i < diff; i++) {
+          this.lista.pop();
+        }
+      } else {
+        // user went back and increased the item size
+        const diff = this.numberOfItems - this.lista.length;
+        console.log(this.numberOfItems);
+        console.log(this.lista);
+        for(let i = 1; i <= diff; i++) {
+          this.lista.push({
+            id: this.lista[this.lista.length-1].id + 1,
+            artist: '',
+            name: '',
+            img: 'https://placehold.co/80x80?text=Cover'
+          });
+        }
+      }
+    } else {
+      this.lista = new Array(this.numberOfItems);
+      for(let i = 0; i < this.numberOfItems; i++) {
+        this.lista[i] = {
+          id: i + 1,
+          artist: '',
+          name: '',
+          img: 'https://placehold.co/80x80?text=Cover'
+        }
       }
     }
     console.log(this.lista);
   }
+
+  
 
   buscar() {
     this.show = true;
@@ -149,7 +176,7 @@ export class MenuComponent implements OnInit {
 
   removeAlbumsWithNoNameOrImage() {
     this.resultados = this.resultados.filter((res) => 
-      res.name != '(null)' && res.image[1]['#text']
+      res.name != '(null)' && res.image[2]['#text']
     )
 
     console.log(this.resultados);
@@ -165,6 +192,7 @@ export class MenuComponent implements OnInit {
 
     if(this.categoriaSelecionada == 3) {
       this.lista[this.selectedItem] = {
+        id: this.selectedItem,
         artist: res.name,
         name: '',
         img: res.images[2].url
@@ -172,16 +200,15 @@ export class MenuComponent implements OnInit {
 
     } else {
       this.lista[this.selectedItem] = {
+        id: this.selectedItem + 1,
         artist: res.artist,
         name: res.name, 
-        img: res.image[1]['#text']
+        img: res.image[2]['#text']
       };
     }
     
     console.log(this.lista);
-    this.stringBusca = '';
-    this.resultados = [];
-    this.show = false;
+    this.listHasStarted = true;
 
   }
 
@@ -197,6 +224,9 @@ export class MenuComponent implements OnInit {
 
   back() {
     this.formStep = 1;
+    this.stringBusca = '';
+    this.resultados = [];
+    this.show = false;
   }
 
 }
