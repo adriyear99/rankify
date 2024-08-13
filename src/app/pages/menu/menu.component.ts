@@ -18,7 +18,7 @@ export class MenuComponent implements OnInit {
 
   values: number[] = [1,2,3,4,5,6,7,8,9,10];
   name: string = 'My Ranking';
-  color: string = '#000';
+  color: string = '#5172e8';
   numberOfItems: number = 1;
   categoriaSelecionada: number = 0;
   category: string = 'track';
@@ -65,7 +65,7 @@ export class MenuComponent implements OnInit {
       default:
         this.category = 'track';
     }
-    this.resultados = [];
+    this.generateList();
   }
 
   generateTemplate() {
@@ -92,20 +92,22 @@ export class MenuComponent implements OnInit {
         }
       }
     } else {
-      this.lista = new Array(this.numberOfItems);
-      for(let i = 0; i < this.numberOfItems; i++) {
-        this.lista[i] = {
-          id: i + 1,
-          artist: '',
-          name: '',
-          img: 'https://placehold.co/80x80?text=Cover'
-        }
-      }
+      this.generateList();
     }
     console.log(this.lista);
   }
 
-  
+  generateList() {
+    this.lista = new Array(this.numberOfItems);
+    for(let i = 0; i < this.numberOfItems; i++) {
+      this.lista[i] = {
+        id: i + 1,
+        artist: '',
+        name: '',
+        img: 'https://placehold.co/80x80?text=Cover'
+      }
+    }
+  }
 
   buscar() {
     this.show = true;
@@ -192,7 +194,7 @@ export class MenuComponent implements OnInit {
 
     if(this.categoriaSelecionada == 3) {
       this.lista[this.selectedItem] = {
-        id: this.selectedItem,
+        id: this.selectedItem + 1,
         artist: res.name,
         name: '',
         img: res.images[2].url
@@ -213,9 +215,20 @@ export class MenuComponent implements OnInit {
   }
 
   reset() {
+    this.name = 'My Ranking';
+    this.color = '#5172e8';
+    this.category = 'track';
+    this.number = '';
+    this.formStep = 1;
+    this.selectedItem = 0;
+    this.listHasStarted = false;
+    this.categoriaSelecionada = 0;
+    this.color = '#5172e8';
+    this.numberOfItems = 1;
     this.resultados = [];
     this.show = false;
     this.stringBusca = '';
+    this.generateList();
   }
 
   next() {
