@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { LastFmService } from 'src/app/services/last-fm.service';
+import { ExternalService } from 'src/app/services/external.service';
 
 @Component({
   selector: 'app-menu',
@@ -32,7 +32,7 @@ export class MenuComponent implements OnInit {
   selectedItem: number = 0;
   listHasStarted: boolean = false;
 
-  constructor(private lastFmService: LastFmService) { }
+  constructor(private externalService: ExternalService) { }
 
   ngOnInit(): void {
     this.generateSpotifyToken();
@@ -40,7 +40,7 @@ export class MenuComponent implements OnInit {
   }
 
   generateSpotifyToken() {
-    this.lastFmService.gerarTokenSpotify().subscribe({
+    this.externalService.gerarTokenSpotify().subscribe({
       next: (data: any) => {
         this.token = data.token_type + ' ' + data.access_token;
         localStorage.setItem('Authorization', this.token);
@@ -128,9 +128,10 @@ export class MenuComponent implements OnInit {
   }
 
   getSongs() {
-    this.lastFmService.buscarMusicas(this.stringBusca).subscribe({
+    this.externalService.buscarMusicas(this.token, this.stringBusca).subscribe({
       next: (data: any) => {
-        this.resultados = data.results ? data.results.trackmatches.track : [];
+        console.log(data.tracks.items);
+        this.resultados = data.tracks.items ? data.tracks.items : [];
         console.log(this.resultados);
       }, 
       error: (error) => {
@@ -139,8 +140,12 @@ export class MenuComponent implements OnInit {
     })
   }
 
+  getSongs2() {
+
+  }
+
   getAlbums() {
-    this.lastFmService.buscarAlbuns(this.stringBusca).subscribe({
+    this.externalService.buscarAlbuns(this.stringBusca).subscribe({
       next: (data: any) => {
         this.resultados = data.results.albummatches.album;
         console.log(this.resultados);
@@ -152,20 +157,8 @@ export class MenuComponent implements OnInit {
     })
   }
 
-  // getArtists() {
-  //   this.lastFmService.buscarArtistas(this.stringBusca).subscribe({
-  //     next: (data: any) => {
-  //       this.resultados = data.results.artistmatches.artist;
-  //       console.log(this.resultados);
-  //     }, 
-  //     error: (error) => {
-  //       console.log(error);
-  //     }
-  //   })
-  // }
-
   getArtists() {
-    this.lastFmService.buscarArtistas(this.token, this.stringBusca).subscribe({
+    this.externalService.buscarArtistas(this.token, this.stringBusca).subscribe({
       next: (data: any) => {
         this.resultados = data.artists.items;
         console.log(this.resultados);
@@ -200,12 +193,20 @@ export class MenuComponent implements OnInit {
         img: res.images[2].url
       };
 
-    } else {
+    } else if(this.categoriaSelecionada == 2) {
       this.lista[this.selectedItem] = {
         id: this.selectedItem + 1,
         artist: res.artist,
         name: res.name, 
         img: res.image[2]['#text']
+      };
+
+    } else {
+      this.lista[this.selectedItem] = {
+        id: this.selectedItem + 1,
+        artist: res.artists[0].name,
+        name: res.name, 
+        img: res.album.images[2].url
       };
     }
     
@@ -240,6 +241,10 @@ export class MenuComponent implements OnInit {
     this.stringBusca = '';
     this.resultados = [];
     this.show = false;
+  }
+
+  download() {
+    console.log('download');
   }
 
 }

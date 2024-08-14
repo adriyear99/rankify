@@ -1,9 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import * as shared from "./shared.service";
 
 @Injectable({providedIn: 'root'})
-export class LastFmService {
+export class ExternalService {
 
     apiKey: string = '5f8eea4329c344c4a028ca6a965d3ef7';
     urlBase: string = 'localhost:4200';
@@ -27,17 +26,20 @@ export class LastFmService {
         );
     }
 
-    buscarMusicas(stringBusca: string) {
+    buscarMusicas(token: string, stringBusca: string) {
         const params = new HttpParams({
             fromObject: {
-                method: 'track.search',
-                api_key: this.apiKey,
-                track: stringBusca,
-                // artist: stringBusca,
-                format: 'json'
+                q: stringBusca,
+                type: 'track',
+                limit: '20'
             }
-        })
-        return this.http.get(`${this.urlBaseLastFm}`, {params});
+        });
+        return this.http.get(`${this.urlBaseSpotify}/v1/search`, { params,
+            headers: new HttpHeaders()
+                .set('Content-Type','application/x-www-form-urlencoded')
+                .set('Authorization', token)
+        } 
+        );
     }
 
     buscarAlbuns(stringBusca: string) {
@@ -51,18 +53,6 @@ export class LastFmService {
         })
         return this.http.get(`${this.urlBaseLastFm}`, {params});
     }
-
-    // buscarArtistas(stringBusca: string) {
-    //     const params = new HttpParams({
-    //         fromObject: {
-    //             method: 'artist.search',
-    //             api_key: this.apiKey,
-    //             artist: stringBusca,
-    //             format: 'json'
-    //         }
-    //     })
-    //     return this.http.get(`${this.urlBaseLastFm}`, {params});
-    // }
 
     buscarArtistas(token: string, stringBusca: string) {
         const params = new HttpParams({

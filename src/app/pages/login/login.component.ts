@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/models/usuario';
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
-import { LastFmService } from 'src/app/services/last-fm.service';
+import { ExternalService } from 'src/app/services/external.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private loginService: LoginService,
-    private lastFmService: LastFmService,
+    private externalService: ExternalService,
     private router: Router
   ) {}
 
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
   logar() {
     console.log(this.login);
     this.router.navigate(['/menu']);
-    this.lastFmService.autorizar().subscribe({
+    this.externalService.autorizar().subscribe({
       next: (data) => {
         console.log(data);
         // this.token = data;
