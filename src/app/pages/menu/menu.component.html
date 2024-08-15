@@ -7,11 +7,15 @@
                 <div class="row" id="part1" *ngIf="formStep == 1">
                     <div class="col-12 mb-3">
                         <label for="name" class="form-label main-font">Ranking Title</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Ranking Title" [(ngModel)]="name">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Ranking Title" maxlength="100" [(ngModel)]="name">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="color" class="form-label main-font">Text Color</label>
+                        <input type="color" class="form-control form-control-color w-100" id="textColor" name="textColor" [(ngModel)]="textColor">
                     </div>
                     <div class="col-6 mb-3">
                         <label for="color" class="form-label main-font">Background Color</label>
-                        <input type="color" class="form-control form-control-color w-100" id="color" name="color" [(ngModel)]="color">
+                        <input type="color" class="form-control form-control-color w-100" id="backgroundColor" name="backgroundColor" [(ngModel)]="backgroundColor">
                     </div>
                     <div class="col-6 mb-3">
                         <label for="numberOfItems" class="form-label main-font">Number of items</label>
@@ -20,7 +24,7 @@
                             <option *ngFor="let num of values" [ngValue]="num">{{num}}</option>
                         </select>
                     </div>
-                    <div class="col-12 mb-4">
+                    <div class="col-6 mb-4">
                         <label for="select" class="form-label main-font">Selection type</label>
                         <select class="form-select" id="select" name="select" [(ngModel)]="categoriaSelecionada" (ngModelChange)="checkCategoria()">
                             <option [ngValue]=0 selected hidden>Tracks</option>
@@ -92,9 +96,18 @@
     </div>
     <!-- GENERATED IMAGE -->
     <div class="col-12 col-md-6 bg-warning">
-        <div class="p-5 h-100 d-flex flex-column align-items-center justify-content-start">
-            <div class="col-12 text-light mb-3" [ngStyle]="{background: color}">
-                <h1 class="text-left main-font fw-bold p-3 h-10">{{name}}</h1>
+        <div class="p-1 p-md-5 mb-3 h-100 d-flex flex-column align-items-center justify-content-start">
+            <!-- DOWNLOADED IMAGE -->
+            <div 
+                id="table" class="col-12 text-light mb-5 mb-md-3" 
+                [ngStyle]="{background: backgroundColor}"
+            >
+                <h1 
+                    class="text-left main-font fw-bold p-3 m-0 h-10"
+                    [ngStyle]="{color: textColor, 'word-wrap': 'break-word'}"    
+                >
+                    {{name}}
+                </h1>
                 <!-- LIST OF ITEMS -->
                 <table class="table mb-0">
                     <tbody>
@@ -108,7 +121,10 @@
                                     {{item.id}}
                             </th>
                             <!-- IMAGE -->
-                            <td class="col-2 border-0 p-0">
+                            <td 
+                                class="col-2 p-0"
+                                [ngClass]="item.id != numberOfItems && numberOfItems > 1 ? 
+                                'border-bottom border-black' : 'border-0'">
                                 <img 
                                 *ngIf="categoriaSelecionada != 3"
                                 src="{{item.img}}"
@@ -121,11 +137,11 @@
                                 alt="{{item.artist}}">
                             </td>
                             <!-- TITLE -->
-                            <td class="col-6" [ngClass]="item.id != numberOfItems ? 
+                            <td class="col-6 py-0" [ngClass]="item.id != numberOfItems ? 
                                 'border-bottom border-black' : 'border-0'">
                                 <div *ngIf="categoriaSelecionada != 3">
-                                    <h2 class="main-font fw-bold">{{item.artist ? item.artist : 'Artist'}}</h2>
-                                    <p class="main-font">{{item.name ? item.name : 'Song/Album'}}</p>
+                                    <h2 class="main-font fw-bold mb-0">{{item.artist ? item.artist : 'Artist'}}</h2>
+                                    <p class="main-font mb-0">{{item.name ? item.name : 'Song/Album'}}</p>
                                 </div>
                                 <div *ngIf="categoriaSelecionada == 3">
                                     <h2>{{item.artist ? item.artist : 'Artist'}}</h2>
@@ -174,7 +190,7 @@
                             <tr *ngFor="let res of resultados" (click)="add(res)"  data-bs-dismiss="modal">
                                 <th scope="row" class="col-3">
                                     <img 
-                                    src="{{res.album.images[2].url}}"
+                                    src="{{res.album.images[1].url}}"
                                     class="img-fluid w-100"
                                     alt="{{res.artists[0].name}} - {{res.name}}">
                                 </th>

@@ -12,8 +12,12 @@ img {
     height: 100px; */
 }
 
+h1 {
+    font-size: 1.2em;
+}
+
 h2 {
-    font-size: 1.5em;
+    font-size: 1.2em;
 }
 
 p {
@@ -29,7 +33,7 @@ th, td {
 }
 
 th {
-    font-size: 48px;
+    font-size: 30px;
 }
 
 td {

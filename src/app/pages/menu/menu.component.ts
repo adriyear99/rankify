@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ExternalService } from 'src/app/services/external.service';
+import { toPng, toJpeg, toCanvas } from 'html-to-image';
 
 @Component({
   selector: 'app-menu',
@@ -18,7 +19,8 @@ export class MenuComponent implements OnInit {
 
   values: number[] = [1,2,3,4,5,6,7,8,9,10];
   name: string = 'My Ranking';
-  color: string = '#5172e8';
+  textColor: string = '#000000';
+  backgroundColor: string = '#5172e8';
   numberOfItems: number = 1;
   categoriaSelecionada: number = 0;
   category: string = 'track';
@@ -140,10 +142,6 @@ export class MenuComponent implements OnInit {
     })
   }
 
-  getSongs2() {
-
-  }
-
   getAlbums() {
     this.externalService.buscarAlbuns(this.stringBusca).subscribe({
       next: (data: any) => {
@@ -206,7 +204,7 @@ export class MenuComponent implements OnInit {
         id: this.selectedItem + 1,
         artist: res.artists[0].name,
         name: res.name, 
-        img: res.album.images[2].url
+        img: res.album.images[1].url
       };
     }
     
@@ -217,14 +215,14 @@ export class MenuComponent implements OnInit {
 
   reset() {
     this.name = 'My Ranking';
-    this.color = '#5172e8';
+    this.textColor = '#000000';
+    this.backgroundColor = '#5172e8';
     this.category = 'track';
     this.number = '';
     this.formStep = 1;
     this.selectedItem = 0;
     this.listHasStarted = false;
     this.categoriaSelecionada = 0;
-    this.color = '#5172e8';
     this.numberOfItems = 1;
     this.resultados = [];
     this.show = false;
@@ -238,13 +236,22 @@ export class MenuComponent implements OnInit {
 
   back() {
     this.formStep = 1;
-    this.stringBusca = '';
-    this.resultados = [];
-    this.show = false;
   }
 
   download() {
-    console.log('download');
+    const table = document.getElementById('table');
+    toJpeg(table, { 
+      quality: 0.95
+    }).then((dataUrl) => {
+      const link = document.createElement('a');
+      link.download = 'ranking.jpg';
+      link.href = dataUrl;
+      link.click();
+      link.remove();
+    })
+    .catch((error) => {
+      console.error('Error downloading image', error);
+    });
   }
 
 }
