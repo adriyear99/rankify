@@ -26,12 +26,12 @@ export class ExternalService {
         );
     }
 
-    buscarMusicas(token: string, stringBusca: string) {
+    getTracks(token: string, stringBusca: string) {
         const params = new HttpParams({
             fromObject: {
                 q: stringBusca,
                 type: 'track',
-                limit: '20'
+                limit: '24'
             }
         });
         return this.http.get(`${this.urlBaseSpotify}/v1/search`, { params,
@@ -42,19 +42,20 @@ export class ExternalService {
         );
     }
 
-    buscarAlbuns(stringBusca: string) {
+    getAlbums(stringBusca: string) {
         const params = new HttpParams({
             fromObject: {
                 method: 'album.search',
                 api_key: this.apiKey,
                 album: stringBusca,
+                limit: 30,
                 format: 'json'
             }
         })
         return this.http.get(`${this.urlBaseLastFm}`, {params});
     }
 
-    buscarArtistas(token: string, stringBusca: string) {
+    getArtists(token: string, stringBusca: string) {
         const params = new HttpParams({
             fromObject: {
                 q: stringBusca,

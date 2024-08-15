@@ -1,31 +1,31 @@
 <div class="row vh-100">
     <!-- MAIN FORM -->
-    <div class="col-12 col-md-6 bg-warning">
+    <div class="col-12 col-md-6 bratground">
         <div class="vh-100 p-4">
             <form>
                 <!-- PART 1 -->
                 <div class="row" id="part1" *ngIf="formStep == 1">
                     <div class="col-12 mb-3">
-                        <label for="name" class="form-label main-font">Ranking Title</label>
+                        <label for="name" class="form-label montserrat">Ranking Title</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Ranking Title" maxlength="100" [(ngModel)]="name">
                     </div>
                     <div class="col-6 mb-3">
-                        <label for="color" class="form-label main-font">Text Color</label>
+                        <label for="color" class="form-label montserrat">Text Color</label>
                         <input type="color" class="form-control form-control-color w-100" id="textColor" name="textColor" [(ngModel)]="textColor">
                     </div>
                     <div class="col-6 mb-3">
-                        <label for="color" class="form-label main-font">Background Color</label>
+                        <label for="color" class="form-label montserrat">Background Color</label>
                         <input type="color" class="form-control form-control-color w-100" id="backgroundColor" name="backgroundColor" [(ngModel)]="backgroundColor">
                     </div>
                     <div class="col-6 mb-3">
-                        <label for="numberOfItems" class="form-label main-font">Number of items</label>
+                        <label for="numberOfItems" class="form-label montserrat">Number of items</label>
                         <select class="form-select" id="numberOfItems" name="numberOfItems" [(ngModel)]="numberOfItems" (ngModelChange)="generateTemplate()">
                             <option [ngValue]=1 selected hidden>1</option>
                             <option *ngFor="let num of values" [ngValue]="num">{{num}}</option>
                         </select>
                     </div>
                     <div class="col-6 mb-4">
-                        <label for="select" class="form-label main-font">Selection type</label>
+                        <label for="select" class="form-label montserrat">Selection type</label>
                         <select class="form-select" id="select" name="select" [(ngModel)]="categoriaSelecionada" (ngModelChange)="checkCategoria()">
                             <option [ngValue]=0 selected hidden>Tracks</option>
                             <option *ngFor="let cat of categories" [ngValue]="cat.id">
@@ -34,7 +34,7 @@
                         </select>
                     </div>
                     <div class="col-12 col-md-4 btn-group">
-                        <button type="button" class="btn btn-primary" (click)="next()">
+                        <button type="button" class="btn btn-primary montserrat" (click)="next()">
                             Next
                         </button>
                     </div>
@@ -99,7 +99,7 @@
         <div class="p-1 p-md-5 mb-3 h-100 d-flex flex-column align-items-center justify-content-start">
             <!-- DOWNLOADED IMAGE -->
             <div 
-                id="table" class="col-12 text-light mb-5 mb-md-3" 
+                id="table" class="col-12 text-light border border-black mb-5 mb-md-3" 
                 [ngStyle]="{background: backgroundColor}"
             >
                 <h1 
@@ -152,7 +152,7 @@
                 </table>
             </div>
             <div class="col-12 col-md-6 btn-group">
-                <button type="button" class="btn btn-success py-3" (click)="download()">
+                <button type="button" class="btn btn-success montserrat py-3" (click)="download()">
                     Download Image
                 </button>
             </div>
@@ -162,14 +162,14 @@
 
 <!-- SEARCH MODAL -->
 <div class="modal" tabindex="-1" id="modal">
-    <div class="modal-dialog" style="max-width: 90%;">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header border-bottom-2!important">
+            <div class="modal-header">
                 <h5 class="modal-title main-font fw-bold">Search for {{category}}s</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="col-9 mx-auto">
+            <div class="modal-body pb-0">
+                <div class="col-11 mx-auto">
                     <div class="input-group input-group-lg mb-3">
                         <input id="search" name="search" #search type="text" class="form-control" placeholder="Select {{category}}" [(ngModel)]="stringBusca" (keyup.enter)="buscar()">
                         <span class="input-group-text pointer" (click)="buscar()">
@@ -178,43 +178,81 @@
                     </div>
                 </div>
                 
-                <p class="text-center mt-5" 
-                *ngIf="resultados.length == 0 && show; 
-                else showResults">
+                <p class="text-center mt-5" *ngIf="resultados.length == 0 && show; else showResults">
                     No results
                 </p>
                 <ng-template #showResults>
                     <!-- TRACKS -->
-                    <table class="table mb-0" *ngIf="categoriaSelecionada == 1">
-                        <tbody>
-                            <tr *ngFor="let res of resultados" (click)="add(res)"  data-bs-dismiss="modal">
-                                <th scope="row" class="col-3">
-                                    <img 
+                    <div class="row" *ngIf="categoriaSelecionada == 1">
+                        <div 
+                            *ngFor="let res of resultados" 
+                            class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3"
+                        >
+                            <div 
+                                class="position-relative pointer" 
+                                (click)="add(res)" data-bs-dismiss="modal"
+                            >
+                                <img 
                                     src="{{res.album.images[1].url}}"
                                     class="img-fluid w-100"
-                                    alt="{{res.artists[0].name}} - {{res.name}}">
-                                </th>
-                                <td class="col-9">{{res.artists[0].name}} - {{res.name}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    alt="{{res.artists[0].name}} - {{res.name}}"
+                                >
+                                <div 
+                                    class="position-absolute"
+                                    [ngStyle]="{'bottom': '8px', 'left': '8px'}"
+                                >
+                                    <h3>{{res.artists[0].name}} - {{res.name}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- ALBUMS -->
                     <div class="row" *ngIf="categoriaSelecionada == 2">
-                        <div *ngFor="let res of resultados" class="col-6 col-sm-4 col-md-2 mb-3">
-                            <div (click)="add(res)" data-bs-dismiss="modal">
-                                <img src="{{res.image[2]['#text']}}" class="img-fluid h-100 w-100" alt="{{res.artist}} - {{res.name}}">
-                                <!-- <p>{{res.artist}} - {{res.name}}</p> -->
+                        <div 
+                            *ngFor="let res of resultados" 
+                            class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3"
+                        >
+                            <div 
+                                class="position-relative pointer" 
+                                (click)="add(res)" data-bs-dismiss="modal"
+                            >
+                                <img 
+                                    src="{{res.image[2]['#text']}}"
+                                    class="img-fluid w-100"
+                                    alt="{{res.artist}} - {{res.name}}"
+                                >
+                                <div 
+                                    class="position-absolute"
+                                    [ngStyle]="{'bottom': '8px', 'left': '8px'}"
+                                >
+                                    <h3>{{res.artist}} - {{res.name}}</h3>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <!-- ARTISTS -->
                     <div class="row" *ngIf="categoriaSelecionada == 3">
-                        <div *ngFor="let res of resultados" class="col-6 col-sm-4 col-md-2 mb-3">
-                            <div (click)="add(res)" data-bs-dismiss="modal">
-                                <img src="{{res.images[2]['url']}}" class="img-fluid h-100 w-100" style="object-fit: contain !important;" alt="{{res.artist}} - {{res.name}}">
-                                <!-- <p>{{res.name}}</p> -->
+                        <div 
+                            *ngFor="let res of resultados" 
+                            class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3"
+                        >
+                        <div 
+                            class="position-relative pointer" 
+                            (click)="add(res)" data-bs-dismiss="modal"
+                        >
+                            <img 
+                                src="{{res.images[2]['url']}}"
+                                class="img-fluid w-100"
+                                alt="{{res.name}}"
+                            >
+                            <div 
+                                class="position-absolute"
+                                [ngStyle]="{'bottom': '8px', 'left': '8px'}"
+                            >
+                                <h3>{{res.name}}</h3>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </ng-template>
             </div>

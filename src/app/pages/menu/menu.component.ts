@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ExternalService } from 'src/app/services/external.service';
-import { toPng, toJpeg, toCanvas } from 'html-to-image';
+import { toJpeg } from 'html-to-image';
 
 @Component({
   selector: 'app-menu',
@@ -130,7 +130,7 @@ export class MenuComponent implements OnInit {
   }
 
   getSongs() {
-    this.externalService.buscarMusicas(this.token, this.stringBusca).subscribe({
+    this.externalService.getTracks(this.token, this.stringBusca).subscribe({
       next: (data: any) => {
         console.log(data.tracks.items);
         this.resultados = data.tracks.items ? data.tracks.items : [];
@@ -143,7 +143,7 @@ export class MenuComponent implements OnInit {
   }
 
   getAlbums() {
-    this.externalService.buscarAlbuns(this.stringBusca).subscribe({
+    this.externalService.getAlbums(this.stringBusca).subscribe({
       next: (data: any) => {
         this.resultados = data.results.albummatches.album;
         console.log(this.resultados);
@@ -156,7 +156,7 @@ export class MenuComponent implements OnInit {
   }
 
   getArtists() {
-    this.externalService.buscarArtistas(this.token, this.stringBusca).subscribe({
+    this.externalService.getArtists(this.token, this.stringBusca).subscribe({
       next: (data: any) => {
         this.resultados = data.artists.items;
         console.log(this.resultados);
