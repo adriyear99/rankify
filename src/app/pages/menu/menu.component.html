@@ -1,30 +1,34 @@
 <div class="row vh-100">
     <!-- MAIN FORM -->
     <div class="col-12 col-md-6 bratground">
-        <div class="vh-100 p-4">
-            <form>
+        <div class="vh-100 p-2 d-flex flex-column justify-content-between">
+            <form class="mb-5">
+                <header class="text-center montserrat">
+                    <h1 class="fw-bold">Rankify</h1>
+                    <p>Rank your favorite songs, albums and artists</p>
+                </header>
                 <!-- PART 1 -->
                 <div class="row" id="part1" *ngIf="formStep == 1">
                     <div class="col-12 mb-3">
                         <label for="name" class="form-label montserrat">Ranking Title</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Ranking Title" maxlength="100" [(ngModel)]="name">
                     </div>
-                    <div class="col-6 mb-3">
+                    <div class="col-12 col-md-6 mb-3">
                         <label for="color" class="form-label montserrat">Text Color</label>
                         <input type="color" class="form-control form-control-color w-100" id="textColor" name="textColor" [(ngModel)]="textColor">
                     </div>
-                    <div class="col-6 mb-3">
+                    <div class="col-12 col-md-6 mb-3">
                         <label for="color" class="form-label montserrat">Background Color</label>
                         <input type="color" class="form-control form-control-color w-100" id="backgroundColor" name="backgroundColor" [(ngModel)]="backgroundColor">
                     </div>
-                    <div class="col-6 mb-3">
+                    <div class="col-12 col-md-6 mb-3">
                         <label for="numberOfItems" class="form-label montserrat">Number of items</label>
                         <select class="form-select" id="numberOfItems" name="numberOfItems" [(ngModel)]="numberOfItems" (ngModelChange)="generateTemplate()">
                             <option [ngValue]=1 selected hidden>1</option>
                             <option *ngFor="let num of values" [ngValue]="num">{{num}}</option>
                         </select>
                     </div>
-                    <div class="col-6 mb-4">
+                    <div class="col-12 col-md-6 mb-4">
                         <label for="select" class="form-label montserrat">Selection type</label>
                         <select class="form-select" id="select" name="select" [(ngModel)]="categoriaSelecionada" (ngModelChange)="checkCategoria()">
                             <option [ngValue]=0 selected hidden>Tracks</option>
@@ -42,7 +46,7 @@
                 <!-- PART 2 -->
                 <div class="row" id="part2" *ngIf="formStep == 2">
                     <div class="col-12 mb-2">
-                        <label for="busca" class="form-label">
+                        <label for="busca" class="form-label montserrat">
                             Select the {{category}}s
                         </label>
                         <div class="input-group mb-3" *ngFor="let item of lista; index as i">
@@ -92,22 +96,36 @@
                     </div>
                 </div>
             </form>
+            <footer class="montserrat text-center">
+                <h4>
+                    Follow me on 
+                    <a href="https://open.spotify.com/user/12178465372?si=08599f4c81534c7b" target="_blank" id="spotify">
+                        Spotify <i class="fa-brands fa-spotify"></i>
+                    </a>
+                </h4>
+                <h4>
+                    Follow me on 
+                    <a href="https://www.last.fm/pt/user/adriyear" target="_blank" id="lastfm">
+                        Last.fm <i class="fab fa-lastfm"></i>
+                    </a>
+                </h4>
+            </footer>
         </div>
     </div>
     <!-- GENERATED IMAGE -->
-    <div class="col-12 col-md-6 bg-warning">
-        <div class="p-1 p-md-5 mb-3 h-100 d-flex flex-column align-items-center justify-content-start">
+    <div class="col-12 col-md-6" id="image-container">
+        <div class="p-0 py-3 px-md-3 px-lg-5 mb-3 h-100 d-flex flex-column align-items-center justify-content-start">
             <!-- DOWNLOADED IMAGE -->
             <div 
-                id="table" class="col-12 text-light border border-black mb-5 mb-md-3" 
+                id="table" class="col-12 text-light mb-5 mb-md-3" 
                 [ngStyle]="{background: backgroundColor}"
             >
-                <h1 
+                <header id="title"
                     class="text-left main-font fw-bold p-3 m-0 h-10"
                     [ngStyle]="{color: textColor, 'word-wrap': 'break-word'}"    
                 >
                     {{name}}
-                </h1>
+                </header>
                 <!-- LIST OF ITEMS -->
                 <table class="table mb-0">
                     <tbody>
@@ -122,9 +140,10 @@
                             </th>
                             <!-- IMAGE -->
                             <td 
-                                class="col-2 p-0"
-                                [ngClass]="item.id != numberOfItems && numberOfItems > 1 ? 
-                                'border-bottom border-black' : 'border-0'">
+                                class="col-4 col-lg-2 p-0"
+                                [ngStyle]="item.artist != '' ? 
+                                {'border': 'none'} : {'border-color': '#cccccc'}"
+                            >
                                 <img 
                                 *ngIf="categoriaSelecionada != 3"
                                 src="{{item.img}}"
@@ -137,8 +156,11 @@
                                 alt="{{item.artist}}">
                             </td>
                             <!-- TITLE -->
-                            <td class="col-6 py-0" [ngClass]="item.id != numberOfItems ? 
-                                'border-bottom border-black' : 'border-0'">
+                            <td 
+                                class="col-6 py-0" 
+                                [ngClass]="item.id != numberOfItems ? 'border-bottom' : 'border-0'"
+                                [ngStyle]="{'border-color': '#cccccc'}"
+                            >
                                 <div *ngIf="categoriaSelecionada != 3">
                                     <h2 class="main-font fw-bold mb-0">{{item.artist ? item.artist : 'Artist'}}</h2>
                                     <p class="main-font mb-0">{{item.name ? item.name : 'Song/Album'}}</p>
@@ -150,10 +172,13 @@
                         </tr>
                     </tbody>
                 </table>
+                <footer class="text-end main-font p-2 h-10">
+                    <p class="montserrat m-0">Generated at rankify.net</p>
+                </footer>
             </div>
-            <div class="col-12 col-md-6 btn-group">
+            <div class="col-10 col-md-8 btn-group">
                 <button type="button" class="btn btn-success montserrat py-3" (click)="download()">
-                    Download Image
+                    <i class="fa-solid fa-download me-2"></i> Download Image
                 </button>
             </div>
         </div>

@@ -1,3 +1,26 @@
+#image-container {
+    background-image: url("../../../assets/background.jpg");
+}
+
+#title {
+    text-transform: uppercase;
+    font-size: 1em;
+}
+
+#spotify {
+    color: #1ed760;
+    text-decoration: none;
+    text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
+    1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+}
+
+#lastfm {
+    color: #f00;
+    text-decoration: none;
+    text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
+    1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+}
+
 .pointer {
     cursor: pointer;
 }
@@ -19,12 +42,14 @@
 
 img {
     object-fit: cover;
-    /* width: 100px;
-    height: 100px; */
+}
+
+td img {
+    display: block;
 }
 
 h1 {
-    font-size: 1.2em;
+    font-size: 3em;
 }
 
 h2 {
@@ -38,8 +63,16 @@ h3 {
     1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
 }
 
+h4 {
+    font-size: 0.8em;
+}
+
 p {
     font-size: 1em;
+}
+
+footer p {
+    font-size: 0.7em;
 }
 
 table {
@@ -51,7 +84,7 @@ th, td {
 }
 
 th {
-    font-size: 30px;
+    font-size: 36px;
 }
 
 td {

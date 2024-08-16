@@ -19,8 +19,8 @@ export class MenuComponent implements OnInit {
 
   values: number[] = [1,2,3,4,5,6,7,8,9,10];
   name: string = 'My Ranking';
-  textColor: string = '#000000';
-  backgroundColor: string = '#5172e8';
+  textColor: string = '#ffffff';
+  backgroundColor: string = '#1a48c4';
   numberOfItems: number = 1;
   categoriaSelecionada: number = 0;
   category: string = 'track';
@@ -67,6 +67,7 @@ export class MenuComponent implements OnInit {
       default:
         this.category = 'track';
     }
+    this.resetSearch();
     this.generateList();
   }
 
@@ -214,7 +215,7 @@ export class MenuComponent implements OnInit {
   }
 
   reset() {
-    this.name = 'My Ranking';
+    this.name = 'MY RANKING';
     this.textColor = '#000000';
     this.backgroundColor = '#5172e8';
     this.category = 'track';
@@ -230,6 +231,12 @@ export class MenuComponent implements OnInit {
     this.generateList();
   }
 
+  resetSearch() {
+    this.resultados = [];
+    this.show = false;
+    this.stringBusca = '';
+  }
+
   next() {
     this.formStep = 2;
   }
@@ -240,9 +247,7 @@ export class MenuComponent implements OnInit {
 
   download() {
     const table = document.getElementById('table');
-    toJpeg(table, { 
-      quality: 0.95
-    }).then((dataUrl) => {
+    toJpeg(table, {quality: 0.95}).then((dataUrl) => {
       const link = document.createElement('a');
       link.download = 'ranking.jpg';
       link.href = dataUrl;
