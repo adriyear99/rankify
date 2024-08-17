@@ -1,11 +1,11 @@
-<div class="row vh-100">
+<div class="row">
     <!-- MAIN FORM -->
-    <div class="col-12 col-md-6 bratground">
-        <div class="vh-100 p-2 d-flex flex-column justify-content-between">
+    <main class="col-12 col-md-6 bratground d-flex flex-column justify-content-around" [ngClass]="formStep == 1 ? 'vh-100' : null">
+        <div class="p-2">
             <form class="mb-5">
-                <header class="text-center montserrat">
+                <header class="text-center montserrat mb-3">
                     <h1 class="fw-bold">Rankify</h1>
-                    <p>Rank your favorite songs, albums and artists</p>
+                    <p>Rank your favorite songs, albums and artists in a custom chart</p>
                 </header>
                 <!-- PART 1 -->
                 <div class="row" id="part1" *ngIf="formStep == 1">
@@ -45,11 +45,10 @@
                 </div>
                 <!-- PART 2 -->
                 <div class="row" id="part2" *ngIf="formStep == 2">
-                    <div class="col-12 mb-2">
-                        <label for="busca" class="form-label montserrat">
-                            Select the {{category}}s
-                        </label>
-                        <div class="input-group mb-3" *ngFor="let item of lista; index as i">
+                    <label for="busca" class="form-label montserrat">
+                        Select the {{category}}s
+                    </label>
+                    <div class="col-12 mb-3" *ngFor="let item of lista; index as i">
                             <!-- TRACKS OR ALBUMS -->
                             <input 
                                 *ngIf="categoriaSelecionada != 3"
@@ -75,7 +74,6 @@
                                 readonly
                                 value="{{item.artist ? item.artist: ''}}"
                             >
-                        </div>
                     </div>
                     <div class="col-12 mb-3">
                         <div class="col-12 col-md-3 btn-group">
@@ -111,17 +109,17 @@
                 </h4>
             </footer>
         </div>
-    </div>
+    </main>
     <!-- GENERATED IMAGE -->
-    <div class="col-12 col-md-6" id="image-container">
+    <aside class="vh-100 col-12 col-md-6" id="image-container" [ngClass]="numberOfItems == 1 ? 'vh-100' : null">
         <div class="p-0 py-3 px-md-3 px-lg-5 mb-3 h-100 d-flex flex-column align-items-center justify-content-start">
             <!-- DOWNLOADED IMAGE -->
             <div 
-                id="table" class="col-12 text-light mb-5 mb-md-3" 
+                id="table" class="col-12 mb-3" 
                 [ngStyle]="{background: backgroundColor}"
             >
                 <header id="title"
-                    class="text-left main-font fw-bold p-3 m-0 h-10"
+                    class="text-left main-font text-light fw-bold p-3 m-0 h-10"
                     [ngStyle]="{color: textColor, 'word-wrap': 'break-word'}"    
                 >
                     {{name}}
@@ -172,7 +170,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <footer class="text-end main-font p-2 h-10">
+                <footer class="text-end text-light main-font p-2 h-10">
                     <p class="montserrat m-0">Generated at rankify.net</p>
                 </footer>
             </div>
@@ -182,7 +180,7 @@
                 </button>
             </div>
         </div>
-    </div>
+    </aside>
 </div>
 
 <!-- SEARCH MODAL -->

@@ -1,5 +1,6 @@
 #image-container {
     background-image: url("../../../assets/background.jpg");
+    background-size: contain;
 }
 
 #title {
@@ -10,15 +11,15 @@
 #spotify {
     color: #1ed760;
     text-decoration: none;
-    text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
-    1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+    text-shadow: 1px 0 #000000, -1px 0 #000000, 0 1px #000000, 0 -1px #000000,
+    1px 1px #000000, -1px -1px #000000, 1px -1px #000000, -1px 1px #000000;
 }
 
 #lastfm {
-    color: #f00;
+    color: #ff0000;
     text-decoration: none;
-    text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
-    1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+    text-shadow: 1px 0 #000000, -1px 0 #000000, 0 1px #000000, 0 -1px #000000,
+    1px 1px #000000, -1px -1px #000000, 1px -1px #000000, -1px 1px #000000;
 }
 
 .pointer {
@@ -40,6 +41,24 @@
     font-style: normal;
 }
 
+@media screen and (min-width: 768px) {
+    main, aside {
+        display: block;
+        overflow: auto;
+        height: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    td div h2 {
+        font-size: 1em;
+    }
+
+    td div p {
+        font-size: 0.7em;
+    }
+}
+
 img {
     object-fit: cover;
 }
@@ -58,9 +77,9 @@ h2 {
 
 h3 {
     font-size: 0.8em;
-    color: #fff;
-    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000,
-    1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+    color: #ffffff;
+    text-shadow: 2px 0 #000000, -2px 0 #000000, 0 2px #000000, 0 -2px #000000,
+    1px 1px #000000, -1px -1px #000000, 1px -1px #000000, -1px 1px #000000;
 }
 
 h4 {
