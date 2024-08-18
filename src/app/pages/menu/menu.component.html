@@ -11,14 +11,14 @@
                 <div class="row" id="part1" *ngIf="formStep == 1">
                     <div class="col-12 mb-3">
                         <label for="name" class="form-label montserrat">Ranking Title</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Ranking Title" maxlength="100" [(ngModel)]="name">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Ranking Title" maxlength="100" [(ngModel)]="title">
                     </div>
                     <div class="col-12 col-md-6 mb-3">
-                        <label for="color" class="form-label montserrat">Text Color</label>
+                        <label for="textColor" class="form-label montserrat">Text Color</label>
                         <input type="color" class="form-control form-control-color w-100" id="textColor" name="textColor" [(ngModel)]="textColor">
                     </div>
                     <div class="col-12 col-md-6 mb-3">
-                        <label for="color" class="form-label montserrat">Background Color</label>
+                        <label for="backgroundColor" class="form-label montserrat">Background Color</label>
                         <input type="color" class="form-control form-control-color w-100" id="backgroundColor" name="backgroundColor" [(ngModel)]="backgroundColor">
                     </div>
                     <div class="col-12 col-md-6 mb-3">
@@ -49,9 +49,9 @@
                         Select the {{category}}s
                     </label>
                     <div class="col-12 mb-3" *ngFor="let item of lista; index as i">
-                            <!-- TRACKS OR ALBUMS -->
+                            <!-- TRACKS -->
                             <input 
-                                *ngIf="categoriaSelecionada != 3"
+                                *ngIf="categoriaSelecionada == 1"
                                 type="text" 
                                 class="form-control pointer" 
                                 placeholder="Select {{category}} {{i+1}}"
@@ -59,8 +59,22 @@
                                 (click)="select(i)"
                                 readonly
                                 value="{{
-                                    item.artist && item.name ?
-                                    item.artist + ' - ' + item.name: ''
+                                    item.artist && item.track ?
+                                    item.artist + ' - ' + item.track : ''
+                                }}"
+                            >
+                            <!-- ALBUMS -->
+                            <input 
+                                *ngIf="categoriaSelecionada == 2"
+                                type="text" 
+                                class="form-control pointer" 
+                                placeholder="Select {{category}} {{i+1}}"
+                                data-bs-toggle="modal" data-bs-target="#modal"
+                                (click)="select(i)"
+                                readonly
+                                value="{{
+                                    item.artist && item.album ?
+                                    item.artist + ' - ' + item.album : ''
                                 }}"
                             >
                             <!-- ARTISTS -->
@@ -86,9 +100,9 @@
                                 Reset
                             </button>
                         </div>
-                        <div class="col-12 col-md-3 mt-2 mt-md-0 btn-group">
-                            <button type="button" class="btn btn-primary" (click)="generateTemplate()">
-                                Generate
+                        <div class="col-12 col-md-5 mt-2 mt-md-0 btn-group">
+                            <button type="button" class="btn btn-success" (click)="save()">
+                                <i class="fa-solid fa-download me-2"></i> Download Image
                             </button>
                         </div>
                     </div>
@@ -122,7 +136,7 @@
                     class="text-left main-font text-light fw-bold p-3 m-0 h-10"
                     [ngStyle]="{color: textColor, 'word-wrap': 'break-word'}"    
                 >
-                    {{name}}
+                    {{title}}
                 </header>
                 <!-- LIST OF ITEMS -->
                 <table class="table mb-0">
@@ -139,14 +153,21 @@
                             <!-- IMAGE -->
                             <td 
                                 class="col-4 col-lg-2 p-0"
-                                [ngStyle]="item.artist != '' ? 
-                                {'border': 'none'} : {'border-color': '#cccccc'}"
+                                [ngClass]="item.artist == '' && 
+                                (item.id != numberOfItems && numberOfItems > 1) ? 
+                                'border-bottom border-light' : 'border-0'"
+                                [ngStyle]="item.artist != '' ? {'border': 'none'} : {}"
                             >
                                 <img 
-                                *ngIf="categoriaSelecionada != 3"
+                                *ngIf="categoriaSelecionada == 1"
                                 src="{{item.img}}"
                                 class="img-fluid w-100"
-                                alt="{{item.artist}} - {{item.name}}">
+                                alt="{{item.artist}} - {{item.track}}">
+                                <img 
+                                *ngIf="categoriaSelecionada == 2"
+                                src="{{item.img}}"
+                                class="img-fluid w-100"
+                                alt="{{item.artist}} - {{item.album}}">
                                 <img 
                                 *ngIf="categoriaSelecionada == 3"
                                 src="{{item.img}}"
@@ -159,9 +180,13 @@
                                 [ngClass]="item.id != numberOfItems ? 'border-bottom' : 'border-0'"
                                 [ngStyle]="{'border-color': '#cccccc'}"
                             >
-                                <div *ngIf="categoriaSelecionada != 3">
+                                <div *ngIf="categoriaSelecionada == 1">
                                     <h2 class="main-font fw-bold mb-0">{{item.artist ? item.artist : 'Artist'}}</h2>
-                                    <p class="main-font mb-0">{{item.name ? item.name : 'Song/Album'}}</p>
+                                    <p class="main-font mb-0">{{item.track ? item.track : 'Song'}}</p>
+                                </div>
+                                <div *ngIf="categoriaSelecionada == 2">
+                                    <h2 class="main-font fw-bold mb-0">{{item.artist ? item.artist : 'Artist'}}</h2>
+                                    <p class="main-font mb-0">{{item.album ? item.album : 'Album'}}</p>
                                 </div>
                                 <div *ngIf="categoriaSelecionada == 3">
                                     <h2>{{item.artist ? item.artist : 'Artist'}}</h2>
@@ -175,7 +200,7 @@
                 </footer>
             </div>
             <div class="col-10 col-md-8 btn-group">
-                <button type="button" class="btn btn-success montserrat py-3" (click)="download()">
+                <button type="button" class="btn btn-success montserrat py-3" (click)="save()">
                     <i class="fa-solid fa-download me-2"></i> Download Image
                 </button>
             </div>

@@ -1,6 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ExternalService } from 'src/app/services/external.service';
 import { toJpeg } from 'html-to-image';
+import { ChartService } from 'src/app/services/chart.service';
+import { Chart } from 'src/app/models/chart';
 
 @Component({
   selector: 'app-menu',
@@ -18,11 +20,11 @@ export class MenuComponent implements OnInit {
   ];
 
   values: number[] = [1,2,3,4,5,6,7,8,9,10];
-  name: string = 'My Ranking';
+  title: string = 'My Ranking';
   textColor: string = '#ffffff';
-  backgroundColor: string = '#1a48c4';
+  backgroundColor: string = '#5172e8';
   numberOfItems: number = 1;
-  categoriaSelecionada: number = 0;
+  categoriaSelecionada: number = 1;
   category: string = 'track';
   number: string = '';
   stringBusca: string = '';
@@ -34,7 +36,10 @@ export class MenuComponent implements OnInit {
   selectedItem: number = 0;
   listHasStarted: boolean = false;
 
-  constructor(private externalService: ExternalService) { }
+  constructor(
+    private externalService: ExternalService, 
+    private chartService: ChartService
+  ) {}
 
   ngOnInit(): void {
     this.generateSpotifyToken();
@@ -89,7 +94,8 @@ export class MenuComponent implements OnInit {
           this.lista.push({
             id: this.lista[this.lista.length-1].id + 1,
             artist: '',
-            name: '',
+            album: '',
+            track: '',
             img: 'https://placehold.co/80x80?text=Cover'
           });
         }
@@ -106,7 +112,8 @@ export class MenuComponent implements OnInit {
       this.lista[i] = {
         id: i + 1,
         artist: '',
-        name: '',
+        album: '',
+        track: '',
         img: 'https://placehold.co/80x80?text=Cover'
       }
     }
@@ -188,7 +195,8 @@ export class MenuComponent implements OnInit {
       this.lista[this.selectedItem] = {
         id: this.selectedItem + 1,
         artist: res.name,
-        name: '',
+        album: '',
+        track: '',
         img: res.images[2].url
       };
 
@@ -196,7 +204,8 @@ export class MenuComponent implements OnInit {
       this.lista[this.selectedItem] = {
         id: this.selectedItem + 1,
         artist: res.artist,
-        name: res.name, 
+        album: res.name,
+        track: '',
         img: res.image[2]['#text']
       };
 
@@ -204,7 +213,8 @@ export class MenuComponent implements OnInit {
       this.lista[this.selectedItem] = {
         id: this.selectedItem + 1,
         artist: res.artists[0].name,
-        name: res.name, 
+        album: '',
+        track: res.name,
         img: res.album.images[1].url
       };
     }
@@ -215,7 +225,7 @@ export class MenuComponent implements OnInit {
   }
 
   reset() {
-    this.name = 'MY RANKING';
+    this.title = 'My Ranking';
     this.textColor = '#000000';
     this.backgroundColor = '#5172e8';
     this.category = 'track';
@@ -223,7 +233,7 @@ export class MenuComponent implements OnInit {
     this.formStep = 1;
     this.selectedItem = 0;
     this.listHasStarted = false;
-    this.categoriaSelecionada = 0;
+    this.categoriaSelecionada = 1;
     this.numberOfItems = 1;
     this.resultados = [];
     this.show = false;
@@ -243,6 +253,27 @@ export class MenuComponent implements OnInit {
 
   back() {
     this.formStep = 1;
+  }
+
+  save() {
+    const chart: Chart = {
+      name: this.title,
+      textColor: this.textColor,
+      backgroundColor: this.backgroundColor,
+      items: this.numberOfItems,
+      selectionType: this.categoriaSelecionada,
+      resultados: this.lista
+    }
+
+    this.chartService.saveChart(chart).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.download();
+      }, 
+      error: (error) => {
+        console.log(error);
+      }
+    })
   }
 
   download() {

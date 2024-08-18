@@ -57,6 +57,18 @@ img {
 
 td img {
     display: block;
+    min-width: 100%;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+}
+
+.table>:not(caption)>*>* {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
 h1 {
