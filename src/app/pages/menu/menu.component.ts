@@ -265,6 +265,8 @@ export class MenuComponent implements OnInit {
       resultados: this.lista
     }
 
+    console.log(chart);
+
     this.chartService.saveChart(chart).subscribe({
       next: (data: any) => {
         console.log(data);
@@ -278,7 +280,7 @@ export class MenuComponent implements OnInit {
 
   download() {
     const table = document.getElementById('table');
-    toJpeg(table, {quality: 0.95}).then((dataUrl) => {
+    toJpeg(table).then((dataUrl) => {
       const link = document.createElement('a');
       link.download = 'ranking.jpg';
       link.href = dataUrl;
