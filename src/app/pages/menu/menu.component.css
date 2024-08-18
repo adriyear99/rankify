@@ -30,10 +30,6 @@
     font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
 }
 
-.bratground {
-    background-color: #8ace00;
-}
-
 .montserrat {
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
@@ -41,12 +37,8 @@
     font-style: normal;
 }
 
-@media screen and (min-width: 768px) {
-    main, aside {
-        display: block;
-        overflow: auto;
-        height: 100%;
-    }
+main {
+    min-height: 100vh;
 }
 
 @media screen and (max-width: 768px) {
