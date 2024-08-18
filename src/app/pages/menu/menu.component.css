@@ -37,6 +37,11 @@
     font-style: normal;
 }
 
+.small {
+    font-size: 1em;
+    font-weight: 500;
+}
+
 main {
     min-height: 100vh;
 }

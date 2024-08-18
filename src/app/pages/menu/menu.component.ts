@@ -35,6 +35,7 @@ export class MenuComponent implements OnInit {
   show: boolean = false;
   selectedItem: number = 0;
   listHasStarted: boolean = false;
+  msgErro: boolean = false;
 
   constructor(
     private externalService: ExternalService, 
@@ -96,7 +97,8 @@ export class MenuComponent implements OnInit {
             artist: '',
             album: '',
             track: '',
-            img: 'https://placehold.co/80x80?text=Cover'
+            img: 'https://placehold.co/80x80?text=Cover',
+            selected: false
           });
         }
       }
@@ -114,7 +116,8 @@ export class MenuComponent implements OnInit {
         artist: '',
         album: '',
         track: '',
-        img: 'https://placehold.co/80x80?text=Cover'
+        img: 'https://placehold.co/80x80?text=Cover',
+        selected: false
       }
     }
   }
@@ -188,6 +191,17 @@ export class MenuComponent implements OnInit {
     this.searchElement.nativeElement.focus();
   }
 
+  remove() {
+    this.lista[this.selectedItem] = {
+      id: this.selectedItem + 1,
+      artist: '',
+      album: '',
+      track: '',
+      img: 'https://placehold.co/80x80?text=Cover',
+      selected: false
+    }
+  }
+
   add(res: any) {
     console.log(res);
 
@@ -197,7 +211,8 @@ export class MenuComponent implements OnInit {
         artist: res.name,
         album: '',
         track: '',
-        img: res.images[2].url
+        img: res.images[2].url,
+        selected: true
       };
 
     } else if(this.categoriaSelecionada == 2) {
@@ -206,7 +221,8 @@ export class MenuComponent implements OnInit {
         artist: res.artist,
         album: res.name,
         track: '',
-        img: res.image[2]['#text']
+        img: res.image[2]['#text'],
+        selected: true
       };
 
     } else {
@@ -215,13 +231,21 @@ export class MenuComponent implements OnInit {
         artist: res.artists[0].name,
         album: '',
         track: res.name,
-        img: res.album.images[1].url
+        img: res.album.images[1].url,
+        selected: true
       };
     }
     
     console.log(this.lista);
     this.listHasStarted = true;
 
+    const containsEmptyItem = this.lista.some(item => {
+      return !item.selected;
+    });
+
+    if(!containsEmptyItem && this.msgErro) {
+      this.msgErro = false;
+    }
   }
 
   reset() {
@@ -238,6 +262,7 @@ export class MenuComponent implements OnInit {
     this.resultados = [];
     this.show = false;
     this.stringBusca = '';
+    this.msgErro = false;
     this.generateList();
   }
 
@@ -252,12 +277,13 @@ export class MenuComponent implements OnInit {
   }
 
   back() {
+    this.msgErro = false;
     this.formStep = 1;
   }
 
   save() {
     const chart: Chart = {
-      name: this.title,
+      name: this.title != '' ? this.title : 'My Ranking',
       textColor: this.textColor,
       backgroundColor: this.backgroundColor,
       items: this.numberOfItems,
@@ -279,17 +305,26 @@ export class MenuComponent implements OnInit {
   }
 
   download() {
-    const table = document.getElementById('table');
-    toJpeg(table).then((dataUrl) => {
-      const link = document.createElement('a');
-      link.download = 'ranking.jpg';
-      link.href = dataUrl;
-      link.click();
-      link.remove();
-    })
-    .catch((error) => {
-      console.error('Error downloading image', error);
+    const containsEmptyItem = this.lista.some(item => {
+      return !item.selected;
     });
+
+    if(containsEmptyItem) {
+      this.msgErro = true;
+    } else {
+      this.msgErro = false;
+      const table = document.getElementById('table');
+      toJpeg(table).then((dataUrl) => {
+        const link = document.createElement('a');
+        link.download = 'ranking.jpg';
+        link.href = dataUrl;
+        link.click();
+        link.remove();
+      })
+      .catch((error) => {
+        console.error('Error downloading image', error);
+      });
+    }
   }
 
 }

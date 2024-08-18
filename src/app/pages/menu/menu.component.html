@@ -1,6 +1,6 @@
 <div class="row">
     <!-- MAIN FORM -->
-    <main class="col-12 col-md-6">
+    <main class="col-12 col-md-6" [ngClass]="formStep == 1 ? 'd-flex flex-column justify-content-around' : ''">
         <div class="p-3">
             <form class="mb-5">
                 <header class="text-center montserrat mb-3">
@@ -105,6 +105,9 @@
                                 <i class="fa-solid fa-download me-2"></i> Download Image
                             </button>
                         </div>
+                        <p class="montserrat small text-center text-md-start text-danger mt-3" *ngIf="msgErro">
+                            * Select all items before downloading.
+                        </p>
                     </div>
                 </div>
             </form>
@@ -136,7 +139,7 @@
                     class="text-left main-font text-light fw-bold p-3 m-0 h-10"
                     [ngStyle]="{color: textColor, 'word-wrap': 'break-word'}"    
                 >
-                    {{title}}
+                    {{title != '' ? title : 'My Ranking'}}
                 </header>
                 <!-- LIST OF ITEMS -->
                 <table class="table mb-0">
@@ -305,7 +308,14 @@
                 </ng-template>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                <button 
+                    type="button" class="btn btn-danger" data-bs-dismiss="modal" 
+                    (click)="remove()" *ngIf="lista[selectedItem].selected">
+                    Remove Item
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    Close
+                </button>
             </div>
         </div>
     </div>
