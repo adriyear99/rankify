@@ -3,6 +3,7 @@ import { ExternalService } from 'src/app/services/external.service';
 import { toJpeg } from 'html-to-image';
 import { ChartService } from 'src/app/services/chart.service';
 import { Chart } from 'src/app/models/chart';
+import { Item } from 'src/app/models/item';
 
 @Component({
   selector: 'app-menu',
@@ -29,7 +30,7 @@ export class MenuComponent implements OnInit {
   number: string = '';
   stringBusca: string = '';
   resultados: any[] = [];
-  lista: any[] = [];
+  lista: Item[] = [];
   token: any = null;
   formStep: number = 1;
   show: boolean = false;
@@ -250,7 +251,7 @@ export class MenuComponent implements OnInit {
 
   reset() {
     this.title = 'My Ranking';
-    this.textColor = '#000000';
+    this.textColor = '#ffffff';
     this.backgroundColor = '#5172e8';
     this.category = 'track';
     this.number = '';
@@ -320,6 +321,7 @@ export class MenuComponent implements OnInit {
         link.href = dataUrl;
         link.click();
         link.remove();
+        this.save(); //send log to database
       })
       .catch((error) => {
         console.error('Error downloading image', error);

@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'Gotham Medium';
+    src: url('../../../assets/gotham-medium.ttf');
+}
+
+.gotham {
+    font-family: 'Gotham Medium';
+}
+
 #image-container {
     background-image: url("../../../assets/background.jpg");
     background-size: contain;
@@ -42,6 +51,10 @@
     font-weight: 500;
 }
 
+.form-label, header p {
+    color: #4c5167;
+}
+
 main {
     min-height: 100vh;
 }
@@ -53,6 +66,13 @@ main {
 
     td div p {
         font-size: 0.7em;
+    }
+
+    div h3 {
+        font-size: 0.8em;
+        color: #ffffff;
+        text-shadow: 2px 0 #000000, -2px 0 #000000, 0 2px #000000, 0 -2px #000000,
+        1px 1px #000000, -1px -1px #000000, 1px -1px #000000, -1px 1px #000000;
     }
 }
 
@@ -85,7 +105,7 @@ h2 {
 }
 
 h3 {
-    font-size: 0.8em;
+    font-size: 0.6em;
     color: #ffffff;
     text-shadow: 2px 0 #000000, -2px 0 #000000, 0 2px #000000, 0 -2px #000000,
     1px 1px #000000, -1px -1px #000000, 1px -1px #000000, -1px 1px #000000;

@@ -1,35 +1,39 @@
 <div class="row">
     <!-- MAIN FORM -->
-    <main class="col-12 col-md-6" [ngClass]="formStep == 1 ? 'd-flex flex-column justify-content-around' : ''">
+    <main class="col-12 col-md-6 d-flex flex-column justify-content-between">
         <div class="p-3">
             <form class="mb-5">
-                <header class="text-center montserrat mb-3">
-                    <h1 class="fw-bold">Rankify</h1>
-                    <p>Rank your favorite songs, albums and artists in a custom chart</p>
+                <header class="text-center mb-3">
+                    <h1 class="gotham fw-bold">
+                        Spotify Chart Maker
+                    </h1>
+                    <p class="montserrat">
+                        Rank your favorite songs, albums and artists in a custom chart
+                    </p>
                 </header>
                 <!-- PART 1 -->
                 <div class="row" id="part1" *ngIf="formStep == 1">
                     <div class="col-12 mb-3">
-                        <label for="name" class="form-label montserrat">Ranking Title</label>
+                        <label for="name" class="form-label gotham fw-bold">Ranking Title</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Ranking Title" maxlength="100" [(ngModel)]="title">
                     </div>
                     <div class="col-12 col-md-6 mb-3">
-                        <label for="textColor" class="form-label montserrat">Text Color</label>
+                        <label for="textColor" class="form-label gotham fw-bold">Text Color</label>
                         <input type="color" class="form-control form-control-color w-100" id="textColor" name="textColor" [(ngModel)]="textColor">
                     </div>
                     <div class="col-12 col-md-6 mb-3">
-                        <label for="backgroundColor" class="form-label montserrat">Background Color</label>
+                        <label for="backgroundColor" class="form-label gotham fw-bold">Background Color</label>
                         <input type="color" class="form-control form-control-color w-100" id="backgroundColor" name="backgroundColor" [(ngModel)]="backgroundColor">
                     </div>
                     <div class="col-12 col-md-6 mb-3">
-                        <label for="numberOfItems" class="form-label montserrat">Number of items</label>
+                        <label for="numberOfItems" class="form-label gotham fw-bold">Number of items</label>
                         <select class="form-select" id="numberOfItems" name="numberOfItems" [(ngModel)]="numberOfItems" (ngModelChange)="generateTemplate()">
                             <option [ngValue]=1 selected hidden>1</option>
                             <option *ngFor="let num of values" [ngValue]="num">{{num}}</option>
                         </select>
                     </div>
                     <div class="col-12 col-md-6 mb-4">
-                        <label for="select" class="form-label montserrat">Selection type</label>
+                        <label for="select" class="form-label gotham fw-bold">Selection type</label>
                         <select class="form-select" id="select" name="select" [(ngModel)]="categoriaSelecionada" (ngModelChange)="checkCategoria()">
                             <option [ngValue]=0 selected hidden>Tracks</option>
                             <option *ngFor="let cat of categories" [ngValue]="cat.id">
@@ -45,7 +49,7 @@
                 </div>
                 <!-- PART 2 -->
                 <div class="row" id="part2" *ngIf="formStep == 2">
-                    <label for="busca" class="form-label montserrat">
+                    <label for="busca" class="form-label gotham fw-bold">
                         Select the {{category}}s
                     </label>
                     <div class="col-12 mb-3" *ngFor="let item of lista; index as i">
@@ -136,7 +140,7 @@
                 [ngStyle]="{background: backgroundColor}"
             >
                 <header id="title"
-                    class="text-left main-font text-light fw-bold p-3 m-0 h-10"
+                    class="text-left main-font fw-bold p-3 m-0 h-10"
                     [ngStyle]="{color: textColor, 'word-wrap': 'break-word'}"    
                 >
                     {{title != '' ? title : 'My Ranking'}}
@@ -198,8 +202,8 @@
                         </tr>
                     </tbody>
                 </table>
-                <footer class="text-end text-light main-font p-2 h-10">
-                    <p class="montserrat m-0">Generated at rankify.net</p>
+                <footer class="text-end main-font p-2 h-10" [ngStyle]="{color: textColor}">
+                    <p class="montserrat m-0">Generated at rankifymusic.net</p>
                 </footer>
             </div>
             <div class="col-10 col-md-8 btn-group">
