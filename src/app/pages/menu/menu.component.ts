@@ -307,17 +307,22 @@ export class MenuComponent implements OnInit {
       const table = document.getElementById('table');
       toJpeg(table).then((dataUrl) => {
         const link = document.createElement('a');
-        link.download = 'ranking.jpg';
+        link.download = this.buildFileName(this.title);
         link.href = dataUrl;
         link.click();
         link.remove();
         this.spinner = false;
+
       })
       .catch((error) => {
         this.spinner = false;
         console.error('Error downloading image', error);
       });
     }
+  }
+
+  buildFileName(title: string) {
+    return title.toLowerCase().replace(/ /g, '') + '.jpg';
   }
 
 }
