@@ -91,8 +91,6 @@ export class MenuComponent implements OnInit {
       } else {
         // user went back and increased the item size
         const diff = this.numberOfItems - this.lista.length;
-        console.log(this.numberOfItems);
-        console.log(this.lista);
         for(let i = 1; i <= diff; i++) {
           this.lista.push({
             id: this.lista[this.lista.length-1].id + 1,
@@ -107,7 +105,6 @@ export class MenuComponent implements OnInit {
     } else {
       this.generateList();
     }
-    console.log(this.lista);
   }
 
   generateList() {
@@ -145,9 +142,7 @@ export class MenuComponent implements OnInit {
   getSongs() {
     this.externalService.getTracks(this.token, this.stringBusca).subscribe({
       next: (data: any) => {
-        console.log(data.tracks.items);
         this.resultados = data.tracks.items ? data.tracks.items : [];
-        console.log(this.resultados);
       }, 
       error: (error) => {
         console.log(error);
@@ -159,7 +154,6 @@ export class MenuComponent implements OnInit {
     this.externalService.getAlbums(this.stringBusca).subscribe({
       next: (data: any) => {
         this.resultados = data.results.albummatches.album;
-        console.log(this.resultados);
         this.removeAlbumsWithNoNameOrImage();
       }, 
       error: (error) => {
@@ -172,7 +166,6 @@ export class MenuComponent implements OnInit {
     this.externalService.getArtists(this.token, this.stringBusca).subscribe({
       next: (data: any) => {
         this.resultados = data.artists.items;
-        console.log(this.resultados);
       }, 
       error: (error) => {
         console.log(error);
@@ -184,8 +177,6 @@ export class MenuComponent implements OnInit {
     this.resultados = this.resultados.filter((res) => 
       res.name != '(null)' && res.image[2]['#text']
     )
-
-    console.log(this.resultados);
   }
 
   select(index: number) {
@@ -205,8 +196,6 @@ export class MenuComponent implements OnInit {
   }
 
   add(res: any) {
-    console.log(res);
-
     if(this.categoriaSelecionada == 3) {
       this.lista[this.selectedItem] = {
         id: this.selectedItem + 1,
@@ -238,7 +227,6 @@ export class MenuComponent implements OnInit {
       };
     }
     
-    console.log(this.lista);
     this.listHasStarted = true;
 
     const containsEmptyItem = this.lista.some(item => {
@@ -294,8 +282,6 @@ export class MenuComponent implements OnInit {
       resultados: this.lista
     }
 
-    console.log(chart);
-
     this.chartService.saveChart(chart).subscribe({
       next: (data: any) => {
         console.log(data);
@@ -317,6 +303,7 @@ export class MenuComponent implements OnInit {
       this.msgErro = true;
     } else {
       this.msgErro = false;
+      this.spinner = true;
       const table = document.getElementById('table');
       toJpeg(table).then((dataUrl) => {
         const link = document.createElement('a');
