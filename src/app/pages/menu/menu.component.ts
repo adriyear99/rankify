@@ -197,12 +197,13 @@ export class MenuComponent implements OnInit {
 
   add(res: any) {
     if(this.categoriaSelecionada == 3) {
+      const url = res.images[2].url;
       this.lista[this.selectedItem] = {
         id: this.selectedItem + 1,
         artist: res.name,
         album: '',
         track: '',
-        img: res.images[2].url,
+        img: url,
         selected: true
       };
 
