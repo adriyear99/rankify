@@ -209,7 +209,7 @@
                     </tbody>
                 </table>
                 <footer class="text-end main-font p-2 h-10" [ngStyle]="{color: textColor}">
-                    <p class="montserrat m-0">Generated at rankifymusic.net</p>
+                    <p class="montserrat m-0">Generated at rankifymusic.netlify.app</p>
                 </footer>
             </div>
             <div class="col-10 col-md-8 btn-group">
@@ -324,7 +324,7 @@
             <div class="modal-footer">
                 <button 
                     type="button" class="btn btn-danger" data-bs-dismiss="modal" 
-                    (click)="remove()" *ngIf="lista[selectedItem].selected">
+                    (click)="remove()" *ngIf="lista[selectedItem] && lista[selectedItem].selected">
                     Remove Item
                 </button>
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
