@@ -37,6 +37,7 @@ export class MenuComponent implements OnInit {
   selectedItem: number = 0;
   listHasStarted: boolean = false;
   msgErro: boolean = false;
+  spinner: boolean = false;
 
   constructor(
     private externalService: ExternalService, 
@@ -283,6 +284,7 @@ export class MenuComponent implements OnInit {
   }
 
   save() {
+    this.spinner = true;
     const chart: Chart = {
       name: this.title != '' ? this.title : 'My Ranking',
       textColor: this.textColor,
@@ -300,6 +302,7 @@ export class MenuComponent implements OnInit {
         this.download();
       }, 
       error: (error) => {
+        this.spinner = false;
         console.log(error);
       }
     })
@@ -321,9 +324,10 @@ export class MenuComponent implements OnInit {
         link.href = dataUrl;
         link.click();
         link.remove();
-        this.save(); //send log to database
+        this.spinner = false;
       })
       .catch((error) => {
+        this.spinner = false;
         console.error('Error downloading image', error);
       });
     }

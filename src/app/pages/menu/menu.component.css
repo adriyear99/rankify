@@ -51,8 +51,9 @@
     font-weight: 500;
 }
 
-.form-label, header p {
+.form-label, header h2 {
     color: #4c5167;
+    font-size: 0.8em;
 }
 
 main {
@@ -97,7 +98,7 @@ td img {
 }
 
 h1 {
-    font-size: 3em;
+    font-size: 2em;
 }
 
 h2 {

@@ -7,9 +7,9 @@
                     <h1 class="gotham fw-bold">
                         Spotify Chart Maker
                     </h1>
-                    <p class="montserrat">
+                    <h2 class="gotham">
                         Rank your favorite songs, albums and artists in a custom chart
-                    </p>
+                    </h2>
                 </header>
                 <!-- PART 1 -->
                 <div class="row" id="part1" *ngIf="formStep == 1">
@@ -42,7 +42,7 @@
                         </select>
                     </div>
                     <div class="col-12 col-md-4 btn-group">
-                        <button type="button" class="btn btn-primary montserrat" (click)="next()">
+                        <button type="button" class="btn btn-primary gotham" (click)="next()">
                             Next
                         </button>
                     </div>
@@ -95,18 +95,24 @@
                     </div>
                     <div class="col-12 mb-3">
                         <div class="col-12 col-md-3 btn-group">
-                            <button type="button" class="btn btn-secondary" (click)="back()">
+                            <button type="button" class="btn btn-secondary gotham" (click)="back()">
                                 Back
                             </button>
                         </div>
                         <div class="col-12 col-md-3 mt-2 mx-md-1 mt-md-0 btn-group">
-                            <button type="button" class="btn btn-danger" (click)="reset()">
+                            <button type="button" class="btn btn-danger gotham" (click)="reset()">
                                 Reset
                             </button>
                         </div>
                         <div class="col-12 col-md-5 mt-2 mt-md-0 btn-group">
-                            <button type="button" class="btn btn-success" (click)="download()">
-                                <i class="fa-solid fa-download me-2"></i> Download Image
+                            <button type="button" class="btn btn-success gotham" (click)="save()" *ngIf="!spinner">
+                                <span>
+                                    <i class="fa-solid fa-download me-2"></i> Download Image
+                                </span>
+                            </button>
+                            <button class="btn btn-success gotham" type="button" disabled *ngIf="spinner">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Loading...
                             </button>
                         </div>
                         <p class="montserrat small text-center text-md-start text-danger mt-3" *ngIf="msgErro">
@@ -115,7 +121,7 @@
                     </div>
                 </div>
             </form>
-            <footer class="montserrat text-center">
+            <footer class="gotham text-center">
                 <h4>
                     Follow me on 
                     <a href="https://open.spotify.com/user/12178465372?si=08599f4c81534c7b" target="_blank" id="spotify">
@@ -207,8 +213,12 @@
                 </footer>
             </div>
             <div class="col-10 col-md-8 btn-group">
-                <button type="button" class="btn btn-success montserrat py-3" (click)="download()">
-                    <i class="fa-solid fa-download me-2"></i> Download Image
+                <button type="button" class="btn btn-success py-3" (click)="save()" *ngIf="!spinner">
+                    <span class="gotham"><i class="fa-solid fa-download me-2"></i> Download Image</span>
+                </button>
+                <button class="btn btn-success gotham py-3" type="button" disabled *ngIf="spinner">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
                 </button>
             </div>
         </div>
