@@ -56,6 +56,12 @@
     font-size: 0.8em;
 }
 
+.artist {
+    width: 130px;
+    height: 120px;
+    object-fit: cover;
+}
+
 main {
     min-height: 100vh;
 }

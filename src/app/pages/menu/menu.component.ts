@@ -166,6 +166,7 @@ export class MenuComponent implements OnInit {
     this.externalService.getArtists(this.token, this.stringBusca).subscribe({
       next: (data: any) => {
         this.resultados = data.artists.items;
+        console.log(this.resultados);
       }, 
       error: (error) => {
         console.log(error);
@@ -237,6 +238,8 @@ export class MenuComponent implements OnInit {
     if(!containsEmptyItem && this.msgErro) {
       this.msgErro = false;
     }
+
+    console.log(this.lista);
   }
 
   reset() {
