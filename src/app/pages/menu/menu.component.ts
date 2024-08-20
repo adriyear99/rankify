@@ -94,7 +94,7 @@ export class MenuComponent implements OnInit {
         for(let i = 1; i <= diff; i++) {
           this.lista.push({
             id: this.lista[this.lista.length-1].id + 1,
-            artist: '',
+            artist: [],
             album: '',
             track: '',
             img: 'https://placehold.co/80x80?text=Cover',
@@ -112,7 +112,7 @@ export class MenuComponent implements OnInit {
     for(let i = 0; i < this.numberOfItems; i++) {
       this.lista[i] = {
         id: i + 1,
-        artist: '',
+        artist: [],
         album: '',
         track: '',
         img: 'https://placehold.co/80x80?text=Cover',
@@ -134,7 +134,6 @@ export class MenuComponent implements OnInit {
         this.getArtists();
         break
       default:
-        this.categoriaSelecionada = 1;
         this.getSongs();
     }
   }
@@ -187,7 +186,7 @@ export class MenuComponent implements OnInit {
   remove() {
     this.lista[this.selectedItem] = {
       id: this.selectedItem + 1,
-      artist: '',
+      artist: [],
       album: '',
       track: '',
       img: 'https://placehold.co/80x80?text=Cover',
@@ -220,7 +219,7 @@ export class MenuComponent implements OnInit {
     } else {
       this.lista[this.selectedItem] = {
         id: this.selectedItem + 1,
-        artist: res.artists[0].name,
+        artist: this.getAllArtists(res.artists),
         album: '',
         track: res.name,
         img: res.album.images[1].url,
@@ -237,6 +236,18 @@ export class MenuComponent implements OnInit {
     if(!containsEmptyItem && this.msgErro) {
       this.msgErro = false;
     }
+  }
+
+  getAllArtists(artists: any[]) {
+    const artistList = [];
+    for(let artist of artists) {
+      artistList.push(artist.name ? artist.name : '');
+    }
+    return artistList;
+  }
+
+  formatArtists(artists: string[]) {
+    return artists.toString();
   }
 
   reset() {

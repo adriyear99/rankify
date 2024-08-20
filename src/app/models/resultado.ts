@@ -1,6 +1,6 @@
 export interface Resultado {
     id: number;
-    artist: string;
+    artist: string[];
     album: string;
     track: string;
     img: string;

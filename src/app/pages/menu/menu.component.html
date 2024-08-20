@@ -166,16 +166,16 @@
                             <!-- IMAGE -->
                             <td 
                                 class="col-4 col-lg-2 p-0"
-                                [ngClass]="item.artist == '' && 
+                                [ngClass]="item.artist.length == 0 && 
                                 (item.id != numberOfItems && numberOfItems > 1) ? 
                                 'border-bottom border-light' : 'border-0'"
-                                [ngStyle]="item.artist != '' ? {'border': 'none'} : {}"
+                                [ngStyle]="item.artist.length == 0 ? {'border': 'none'} : {}"
                             >
                                 <img 
                                 *ngIf="categoriaSelecionada == 1"
                                 src="{{item.img}}"
                                 class="img-fluid w-100"
-                                alt="{{item.artist}} - {{item.track}}">
+                                alt="{{item.artist.toString()}} - {{item.track}}">
                                 <img 
                                 *ngIf="categoriaSelecionada == 2"
                                 src="{{item.img}}"
@@ -194,15 +194,24 @@
                                 [ngStyle]="{'border-color': '#cccccc'}"
                             >
                                 <div *ngIf="categoriaSelecionada == 1">
-                                    <h2 class="main-font fw-bold mb-0">{{item.artist ? item.artist : 'Artist'}}</h2>
+                                    <h2 class="main-font fw-bold mb-0" 
+                                    *ngIf="item.artist.length == 0; else artists">
+                                        {{'Artist'}}
+                                    </h2>
+                                    <ng-template #artists>
+                                        <h2 class="main-font fw-bold mb-0">
+                                            {{item.artist.length == 1 ? 
+                                                item.artist.toString() : item.artist.join(', ')}}
+                                        </h2>
+                                    </ng-template>
                                     <p class="main-font mb-0">{{item.track ? item.track : 'Song'}}</p>
                                 </div>
                                 <div *ngIf="categoriaSelecionada == 2">
-                                    <h2 class="main-font fw-bold mb-0">{{item.artist ? item.artist : 'Artist'}}</h2>
+                                    <h2 class="main-font fw-bold mb-0">{{item.selected ? item.artist : 'Artist'}}</h2>
                                     <p class="main-font mb-0">{{item.album ? item.album : 'Album'}}</p>
                                 </div>
                                 <div *ngIf="categoriaSelecionada == 3">
-                                    <h2>{{item.artist ? item.artist : 'Artist'}}</h2>
+                                    <h2>{{item.selected ? item.artist : 'Artist'}}</h2>
                                 </div>
                             </td>
                         </tr>
