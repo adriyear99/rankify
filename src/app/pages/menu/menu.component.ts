@@ -336,4 +336,9 @@ export class MenuComponent implements OnInit {
     return title.toLowerCase().replace(/ /g, '') + '.jpg';
   }
 
+  clear() {
+    this.stringBusca = '';
+    this.resultados = [];
+  }
+
 }

@@ -193,23 +193,26 @@
                                 [ngClass]="item.id != numberOfItems ? 'border-bottom' : 'border-0'"
                                 [ngStyle]="{'border-color': '#cccccc'}"
                             >
+                                <!-- TRACK SELECTED -->
                                 <div *ngIf="categoriaSelecionada == 1">
-                                    <h2 class="main-font fw-bold mb-0" 
+                                    <h2 class="main-font fw-bold mb-0">{{item.track ? item.track : 'Song'}}</h2>
+                                    <p class="main-font mb-0" 
                                     *ngIf="item.artist.length == 0; else artists">
                                         {{'Artist'}}
-                                    </h2>
+                                    </p>
                                     <ng-template #artists>
-                                        <h2 class="main-font fw-bold mb-0">
+                                        <p class="main-font mb-0">
                                             {{item.artist.length == 1 ? 
                                                 item.artist.toString() : item.artist.join(', ')}}
-                                        </h2>
+                                        </p>
                                     </ng-template>
-                                    <p class="main-font mb-0">{{item.track ? item.track : 'Song'}}</p>
                                 </div>
+                                <!-- ALBUM SELECTED -->
                                 <div *ngIf="categoriaSelecionada == 2">
-                                    <h2 class="main-font fw-bold mb-0">{{item.selected ? item.artist : 'Artist'}}</h2>
-                                    <p class="main-font mb-0">{{item.album ? item.album : 'Album'}}</p>
+                                    <h2 class="main-font fw-bold mb-0">{{item.album ? item.album : 'Album'}}</h2>
+                                    <p class="main-font mb-0">{{item.selected ? item.artist : 'Artist'}}</p>
                                 </div>
+                                <!-- ARTIST SELECTED -->
                                 <div *ngIf="categoriaSelecionada == 3">
                                     <h2>{{item.selected ? item.artist : 'Artist'}}</h2>
                                 </div>
@@ -335,6 +338,9 @@
                     type="button" class="btn btn-danger" data-bs-dismiss="modal" 
                     (click)="remove()" *ngIf="lista[selectedItem] && lista[selectedItem].selected">
                     Remove Item
+                </button>
+                <button type="button" class="btn btn-danger" (click)="clear()">
+                    Clear
                 </button>
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                     Close
